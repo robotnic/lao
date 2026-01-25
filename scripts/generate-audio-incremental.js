@@ -88,24 +88,31 @@ function getVoicePrompt(voice) {
 }
 
 /**
- * Generate audio using Gemini API
+ * Generate audio using Google Cloud Text-to-Speech API
  */
 function generateAudioWithGemini(text, voice) {
   return new Promise((resolve, reject) => {
+    // Google Cloud TTS payload
+    const voiceConfig = voice === 'male' 
+      ? { name: 'lo-LA-Standard-A', ssmlGender: 'MALE' }
+      : { name: 'lo-LA-Standard-B', ssmlGender: 'FEMALE' };
+    
     const payload = {
-      contents: [{
-        parts: [{
-          text: `Please speak this text in Lao language with a clear ${voice} voice: "${text}"`
-        }]
-      }],
-      generationConfig: {
-        responseModalities: ['AUDIO']
+      input: { text: text },
+      voice: {
+        languageCode: 'lo-LA',
+        ...voiceConfig
+      },
+      audioConfig: {
+        audioEncoding: 'MP3',
+        speakingRate: 0.9,
+        pitch: 0
       }
     };
 
     const options = {
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${CONFIG.API_KEY}`,
+      hostname: 'texttospeech.googleapis.com',
+      path: `/v1/text:synthesize?key=${CONFIG.API_KEY}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -125,21 +132,11 @@ function generateAudioWithGemini(text, voice) {
           try {
             const response = JSON.parse(data);
             
-            if (response.candidates && response.candidates[0] && 
-                response.candidates[0].content && 
-                response.candidates[0].content.parts) {
-              
-              const parts = response.candidates[0].content.parts;
-              for (const part of parts) {
-                if (part.inlineData && part.inlineData.data) {
-                  const audioContent = part.inlineData.data;
-                  resolve(Buffer.from(audioContent, 'base64'));
-                  return;
-                }
-              }
+            if (response.audioContent) {
+              resolve(Buffer.from(response.audioContent, 'base64'));
+            } else {
+              reject(new Error('No audio content in response'));
             }
-            
-            reject(new Error('No audio content in response'));
           } catch (error) {
             reject(error);
           }
