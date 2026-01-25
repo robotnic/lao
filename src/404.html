@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AILAO - Lao Learning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript">
+      // SPA redirect: redirect 404 to index.html with path preservation
+      var pathSegments = location.pathname.split('/').filter(Boolean);
+      sessionStorage.redirect = '/' + pathSegments.slice(1).join('/');
+      location.replace('/lao');
+    </script>
+  </head>
+  <body>
+    Redirecting...
+  </body>
+</html>
