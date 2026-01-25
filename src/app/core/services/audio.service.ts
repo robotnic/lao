@@ -25,7 +25,7 @@ export class AudioService {
    * @param language Language code for TTS fallback
    */
   playAudio(audioKey: string, fallbackText: string, language: string = 'lo-LA'): void {
-    const audioPath = `/assets/audio/${audioKey}.mp3`;
+    const audioPath = `assets/audio/${audioKey}.mp3`;
 
     // Try to use cached audio element
     let audio = this.audioCache.get(audioKey);
@@ -106,7 +106,7 @@ export class AudioService {
    */
   preloadAudio(audioKey: string): void {
     if (!this.audioCache.has(audioKey)) {
-      const audio = new Audio(`/assets/audio/${audioKey}.mp3`);
+      const audio = new Audio(`assets/audio/${audioKey}.mp3`);
       this.audioCache.set(audioKey, audio);
     }
   }
