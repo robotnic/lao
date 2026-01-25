@@ -175,7 +175,10 @@ async function generateAudio(entry, voiceIndex) {
   // Get text to synthesize
   let textToSynthesize = '';
   
-  if (entry.lao) {
+  // Prefer name_lao for consonants (letter names in Lao script)
+  if (entry.name_lao) {
+    textToSynthesize = entry.name_lao;
+  } else if (entry.lao) {
     textToSynthesize = entry.lao;
   } else if (entry.english) {
     textToSynthesize = entry.english;
