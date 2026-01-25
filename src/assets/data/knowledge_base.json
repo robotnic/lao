@@ -45,6 +45,7 @@
       "id": "ko_kay",
       "lao": "ກ",
       "name": "Ko Kay",
+      "name_lao": "ກໍ້ກາຍ",
       "type": "consonant",
       "class": "mid",
       "sounds": {
@@ -69,7 +70,8 @@
       "mnemonic": "Kh for Egg",
       "level_id": "script_01",
       "audio_key": "kho_khay_v1",
-      "image_key": "kho_khay_stroke"
+      "image_key": "kho_khay_stroke",
+      "name_lao": "ຂໍ້ຂາຍ"
     },
     {
       "id": "ngo_ngeun",
@@ -84,7 +86,8 @@
       "mnemonic": "Ng for Gong",
       "level_id": "script_01",
       "audio_key": "ngo_ngeun_v1",
-      "image_key": "ngo_ngeun_stroke"
+      "image_key": "ngo_ngeun_stroke",
+      "name_lao": "ງໍ້ງື່ອນ"
     },
     {
       "id": "cho_choe",
@@ -99,7 +102,8 @@
       "mnemonic": "Ch for Bird",
       "level_id": "script_01",
       "audio_key": "cho_choe_v1",
-      "image_key": "cho_choe_stroke"
+      "image_key": "cho_choe_stroke",
+      "name_lao": "ຈໍ້ຈື່ອ"
     },
     {
       "id": "so_sua",
@@ -114,7 +118,8 @@
       "mnemonic": "S for Tiger",
       "level_id": "script_01",
       "audio_key": "so_sua_v1",
-      "image_key": "so_sua_stroke"
+      "image_key": "so_sua_stroke",
+      "name_lao": "ສໍ້ສືອ"
     },
     {
       "id": "tho_thung",
@@ -129,7 +134,8 @@
       "mnemonic": "Th for Bucket",
       "level_id": "script_01",
       "audio_key": "tho_thung_v1",
-      "image_key": "tho_thung_stroke"
+      "image_key": "tho_thung_stroke",
+      "name_lao": "ທໍ້ທຸງ"
     },
     {
       "id": "tho_tham",
@@ -144,7 +150,8 @@
       "mnemonic": "Th for Flag",
       "level_id": "script_01",
       "audio_key": "tho_tham_v1",
-      "image_key": "tho_tham_stroke"
+      "image_key": "tho_tham_stroke",
+      "name_lao": "ທໍ້ທໍາ"
     },
     {
       "id": "do_dip",
@@ -159,7 +166,8 @@
       "mnemonic": "D for Candle",
       "level_id": "script_01",
       "audio_key": "do_dip_v1",
-      "image_key": "do_dip_stroke"
+      "image_key": "do_dip_stroke",
+      "name_lao": "ດໍ້ດີບ"
     },
     {
       "id": "to_tae",
@@ -174,7 +182,8 @@
       "mnemonic": "T for Soldier",
       "level_id": "script_01",
       "audio_key": "to_tae_v1",
-      "image_key": "to_tae_stroke"
+      "image_key": "to_tae_stroke",
+      "name_lao": "ຕໍ້ແຕ"
     },
     {
       "id": "tho_thip",
@@ -189,7 +198,8 @@
       "mnemonic": "Th for Monkey",
       "level_id": "script_01",
       "audio_key": "tho_thip_v1",
-      "image_key": "tho_thip_stroke"
+      "image_key": "tho_thip_stroke",
+      "name_lao": "ທໍ້ທິບ"
     },
     {
       "id": "nyo_nyung",
@@ -204,7 +214,8 @@
       "mnemonic": "Ny for Woman",
       "level_id": "script_01",
       "audio_key": "nyo_nyung_v1",
-      "image_key": "nyo_nyung_stroke"
+      "image_key": "nyo_nyung_stroke",
+      "name_lao": "ຍໍ້ຍຸງ"
     },
     {
       "id": "bo_bae",
@@ -219,7 +230,8 @@
       "mnemonic": "B for Fish",
       "level_id": "script_01",
       "audio_key": "bo_bae_v1",
-      "image_key": "bo_bae_stroke"
+      "image_key": "bo_bae_stroke",
+      "name_lao": "ບໍ້ແບ"
     },
     {
       "id": "po_pae",
@@ -234,7 +246,8 @@
       "mnemonic": "P for Bee",
       "level_id": "script_01",
       "audio_key": "po_pae_v1",
-      "image_key": "po_pae_stroke"
+      "image_key": "po_pae_stroke",
+      "name_lao": "ປໍ້ແປ"
     },
     {
       "id": "pho_phae",
@@ -249,7 +262,8 @@
       "mnemonic": "Ph for Elephant",
       "level_id": "script_01",
       "audio_key": "pho_phae_v1",
-      "image_key": "pho_phae_stroke"
+      "image_key": "pho_phae_stroke",
+      "name_lao": "ພໍ້ພາຍ"
     },
     {
       "id": "fo_fa",
@@ -264,7 +278,8 @@
       "mnemonic": "F for Buffalo",
       "level_id": "script_01",
       "audio_key": "fo_fa_v1",
-      "image_key": "fo_fa_stroke"
+      "image_key": "fo_fa_stroke",
+      "name_lao": "ຟໍ້ຟາ"
     },
     {
       "id": "mo_mae",
@@ -279,7 +294,8 @@
       "mnemonic": "M for Horse",
       "level_id": "script_01",
       "audio_key": "mo_mae_v1",
-      "image_key": "mo_mae_stroke"
+      "image_key": "mo_mae_stroke",
+      "name_lao": "ມໍ້ແມ"
     },
     {
       "id": "yo_yak",
@@ -294,7 +310,8 @@
       "mnemonic": "Y for Yak",
       "level_id": "script_01",
       "audio_key": "yo_yak_v1",
-      "image_key": "yo_yak_stroke"
+      "image_key": "yo_yak_stroke",
+      "name_lao": "ຢໍ້ຢາກ"
     },
     {
       "id": "ro_rueang",
@@ -309,7 +326,8 @@
       "mnemonic": "R for Boat",
       "level_id": "script_01",
       "audio_key": "ro_rueang_v1",
-      "image_key": "ro_rueang_stroke"
+      "image_key": "ro_rueang_stroke",
+      "name_lao": "ຣໍ້ເຣື່ອງ"
     },
     {
       "id": "lo_ling",
@@ -324,7 +342,8 @@
       "mnemonic": "L for Elephant",
       "level_id": "script_01",
       "audio_key": "lo_ling_v1",
-      "image_key": "lo_ling_stroke"
+      "image_key": "lo_ling_stroke",
+      "name_lao": "ລໍ້ລິງ"
     },
     {
       "id": "wo_waen",
@@ -339,7 +358,8 @@
       "mnemonic": "W for Frog",
       "level_id": "script_01",
       "audio_key": "wo_waen_v1",
-      "image_key": "wo_waen_stroke"
+      "image_key": "wo_waen_stroke",
+      "name_lao": "ວໍ້ວ່ານ"
     },
     {
       "id": "ho_hiae",
@@ -354,7 +374,8 @@
       "mnemonic": "H for Box",
       "level_id": "script_01",
       "audio_key": "ho_hiae_v1",
-      "image_key": "ho_hiae_stroke"
+      "image_key": "ho_hiae_stroke",
+      "name_lao": "ຫໍ້ຫີ່ຍະ"
     },
     {
       "id": "o_o",
@@ -369,7 +390,8 @@
       "mnemonic": "O for Bowl",
       "level_id": "script_01",
       "audio_key": "o_o_v1",
-      "image_key": "o_o_stroke"
+      "image_key": "o_o_stroke",
+      "name_lao": "ອໍ້ອໍ"
     },
     {
       "id": "sara_aa",
@@ -773,7 +795,10 @@
       "lao": "ສະບາຍດີ ຫຼາຍ",
       "phonetic": "sa-bai-di lai",
       "english": "very well/doing great",
-      "related_word_ids": ["sabaidee_01", "mak_01"],
+      "related_word_ids": [
+        "sabaidee_01",
+        "mak_01"
+      ],
       "level_id": "basics_01",
       "complexity": 1,
       "audio_key": "ph_01_v1"
@@ -783,7 +808,10 @@
       "lao": "ກິນ ເຂົ້າ",
       "phonetic": "kin khao",
       "english": "to eat rice (meal phrase)",
-      "related_word_ids": ["gin_01", "khao_01"],
+      "related_word_ids": [
+        "gin_01",
+        "khao_01"
+      ],
       "level_id": "food_01",
       "complexity": 1,
       "audio_key": "ph_02_v1"
@@ -793,7 +821,10 @@
       "lao": "ນ້ຳ ຫຼາຍ",
       "phonetic": "nam lai",
       "english": "lots of water",
-      "related_word_ids": ["nam_01", "mak_01"],
+      "related_word_ids": [
+        "nam_01",
+        "mak_01"
+      ],
       "level_id": "food_01",
       "complexity": 1,
       "audio_key": "ph_03_v1"
@@ -803,7 +834,10 @@
       "lao": "ມີ ບໍ່",
       "phonetic": "mi bo",
       "english": "do you have? (question form)",
-      "related_word_ids": ["man_01", "bor_01"],
+      "related_word_ids": [
+        "man_01",
+        "bor_01"
+      ],
       "level_id": "basics_01",
       "complexity": 1,
       "audio_key": "ph_04_v1"
@@ -813,7 +847,10 @@
       "lao": "ຢູ່ ບໍ່",
       "phonetic": "yu bo",
       "english": "not here/not staying",
-      "related_word_ids": ["yuu_01", "bor_01"],
+      "related_word_ids": [
+        "yuu_01",
+        "bor_01"
+      ],
       "level_id": "basics_01",
       "complexity": 1,
       "audio_key": "ph_05_v1"
@@ -823,11 +860,13 @@
       "lao": "ກິນ ບໍ່",
       "phonetic": "kin bo",
       "english": "don't eat/won't eat",
-      "related_word_ids": ["gin_01", "bor_01"],
+      "related_word_ids": [
+        "gin_01",
+        "bor_01"
+      ],
       "level_id": "food_01",
       "complexity": 1,
       "audio_key": "ph_06_v1"
     }
   ]
 }
- 
