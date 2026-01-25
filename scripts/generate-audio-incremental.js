@@ -95,14 +95,11 @@ function generateAudioWithGemini(text, voice) {
     const payload = {
       contents: [{
         parts: [{
-          text: `${getVoicePrompt(voice)} Text to speak: "${text}"`
+          text: `Please speak this text in Lao language with a clear ${voice} voice: "${text}"`
         }]
       }],
       generationConfig: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voicePreset: voice === 'male' ? 'Charon' : 'Aoede'
-        }
+        responseModalities: ['AUDIO']
       }
     };
 
