@@ -144,7 +144,7 @@ export class JsonDataProviderService {
 
     try {
       const data = await firstValueFrom(
-        this.http.get<KnowledgeBase>('/assets/data/knowledge_base.json')
+        this.http.get<KnowledgeBase>('assets/data/knowledge_base.json')
       );
 
       // Validate structure
