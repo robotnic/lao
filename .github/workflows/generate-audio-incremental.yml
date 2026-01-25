@@ -1,0 +1,46 @@
+name: Generate Audio Files on Main Merge
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/assets/data/knowledge_base.json'
+  workflow_dispatch:
+
+jobs:
+  generate-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Generate audio files (skip existing)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node scripts/generate-audio-incremental.js
+      
+      - name: Commit new audio files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: add generated audio files'
+          file_pattern: 'src/assets/audio/*.mp3'
+          skip_fetch: false
+          skip_checkout: false
+          create_branch: false
+          
+      - name: Report generation status
+        run: |
+          echo "✅ Audio generation complete"
+          echo "Files generated: $(find src/assets/audio -name '*.mp3' | wc -l) / 200"

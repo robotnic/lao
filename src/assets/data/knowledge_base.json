@@ -1,0 +1,832 @@
+{
+  "meta": {
+    "version": "2.2.0",
+    "last_updated": "2026-01-25",
+    "base_language": "lo-LA",
+    "target_language": "en-US",
+    "description": "Lao Language Learning Knowledge Base - Unified Monolith",
+    "total_characters": 43,
+    "total_words": 12,
+    "total_phrases": 6,
+    "total_levels": 4
+  },
+  "levels": [
+    {
+      "id": "script_01",
+      "title": "Alphabet: Consonants 1",
+      "type": "alphabet",
+      "order": 1,
+      "description": "Introduction to high and mid consonants"
+    },
+    {
+      "id": "script_02",
+      "title": "Alphabet: Vowels 1",
+      "type": "alphabet",
+      "order": 2,
+      "description": "Basic vowel sounds and marks"
+    },
+    {
+      "id": "basics_01",
+      "title": "Survival: Greetings",
+      "type": "vocabulary",
+      "order": 3,
+      "description": "Essential greetings and politeness particles"
+    },
+    {
+      "id": "food_01",
+      "title": "Survival: Food & Drink",
+      "type": "vocabulary",
+      "order": 4,
+      "description": "Common food items and eating-related words"
+    }
+  ],
+  "alphabet": [
+    {
+      "id": "ko_kay",
+      "lao": "ກ",
+      "name": "Ko Kay",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "k",
+        "sound_final": "k"
+      },
+      "mnemonic": "K for Chicken",
+      "level_id": "script_01",
+      "audio_key": "ko_kay_v1",
+      "image_key": "ko_kay_stroke"
+    },
+    {
+      "id": "kho_khay",
+      "lao": "ຂ",
+      "name": "Kho Khay",
+      "type": "consonant",
+      "class": "high",
+      "sounds": {
+        "sound_initial": "kh",
+        "sound_final": "k"
+      },
+      "mnemonic": "Kh for Egg",
+      "level_id": "script_01",
+      "audio_key": "kho_khay_v1",
+      "image_key": "kho_khay_stroke"
+    },
+    {
+      "id": "ngo_ngeun",
+      "lao": "ງ",
+      "name": "Ngo Ngeun",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "ng",
+        "sound_final": "ng"
+      },
+      "mnemonic": "Ng for Gong",
+      "level_id": "script_01",
+      "audio_key": "ngo_ngeun_v1",
+      "image_key": "ngo_ngeun_stroke"
+    },
+    {
+      "id": "cho_choe",
+      "lao": "ຈ",
+      "name": "Cho Choe",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "ch",
+        "sound_final": "t"
+      },
+      "mnemonic": "Ch for Bird",
+      "level_id": "script_01",
+      "audio_key": "cho_choe_v1",
+      "image_key": "cho_choe_stroke"
+    },
+    {
+      "id": "so_sua",
+      "lao": "ສ",
+      "name": "So Sua",
+      "type": "consonant",
+      "class": "high",
+      "sounds": {
+        "sound_initial": "s",
+        "sound_final": "t"
+      },
+      "mnemonic": "S for Tiger",
+      "level_id": "script_01",
+      "audio_key": "so_sua_v1",
+      "image_key": "so_sua_stroke"
+    },
+    {
+      "id": "tho_thung",
+      "lao": "ຖ",
+      "name": "Tho Thung",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "th",
+        "sound_final": "t"
+      },
+      "mnemonic": "Th for Bucket",
+      "level_id": "script_01",
+      "audio_key": "tho_thung_v1",
+      "image_key": "tho_thung_stroke"
+    },
+    {
+      "id": "tho_tham",
+      "lao": "ທ",
+      "name": "Tho Tham",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "th",
+        "sound_final": "t"
+      },
+      "mnemonic": "Th for Flag",
+      "level_id": "script_01",
+      "audio_key": "tho_tham_v1",
+      "image_key": "tho_tham_stroke"
+    },
+    {
+      "id": "do_dip",
+      "lao": "ດ",
+      "name": "Do Dip",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "d",
+        "sound_final": "t"
+      },
+      "mnemonic": "D for Candle",
+      "level_id": "script_01",
+      "audio_key": "do_dip_v1",
+      "image_key": "do_dip_stroke"
+    },
+    {
+      "id": "to_tae",
+      "lao": "ຕ",
+      "name": "To Tae",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "t",
+        "sound_final": "t"
+      },
+      "mnemonic": "T for Soldier",
+      "level_id": "script_01",
+      "audio_key": "to_tae_v1",
+      "image_key": "to_tae_stroke"
+    },
+    {
+      "id": "tho_thip",
+      "lao": "ທ",
+      "name": "Tho Thip",
+      "type": "consonant",
+      "class": "high",
+      "sounds": {
+        "sound_initial": "th",
+        "sound_final": "t"
+      },
+      "mnemonic": "Th for Monkey",
+      "level_id": "script_01",
+      "audio_key": "tho_thip_v1",
+      "image_key": "tho_thip_stroke"
+    },
+    {
+      "id": "nyo_nyung",
+      "lao": "ຍ",
+      "name": "Nyo Nyung",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "ny",
+        "sound_final": "ny"
+      },
+      "mnemonic": "Ny for Woman",
+      "level_id": "script_01",
+      "audio_key": "nyo_nyung_v1",
+      "image_key": "nyo_nyung_stroke"
+    },
+    {
+      "id": "bo_bae",
+      "lao": "ບ",
+      "name": "Bo Bae",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "b",
+        "sound_final": "p"
+      },
+      "mnemonic": "B for Fish",
+      "level_id": "script_01",
+      "audio_key": "bo_bae_v1",
+      "image_key": "bo_bae_stroke"
+    },
+    {
+      "id": "po_pae",
+      "lao": "ປ",
+      "name": "Po Pae",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "p",
+        "sound_final": "p"
+      },
+      "mnemonic": "P for Bee",
+      "level_id": "script_01",
+      "audio_key": "po_pae_v1",
+      "image_key": "po_pae_stroke"
+    },
+    {
+      "id": "pho_phae",
+      "lao": "ພ",
+      "name": "Pho Phae",
+      "type": "consonant",
+      "class": "high",
+      "sounds": {
+        "sound_initial": "ph",
+        "sound_final": "p"
+      },
+      "mnemonic": "Ph for Elephant",
+      "level_id": "script_01",
+      "audio_key": "pho_phae_v1",
+      "image_key": "pho_phae_stroke"
+    },
+    {
+      "id": "fo_fa",
+      "lao": "ຟ",
+      "name": "Fo Fa",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "f",
+        "sound_final": "p"
+      },
+      "mnemonic": "F for Buffalo",
+      "level_id": "script_01",
+      "audio_key": "fo_fa_v1",
+      "image_key": "fo_fa_stroke"
+    },
+    {
+      "id": "mo_mae",
+      "lao": "ມ",
+      "name": "Mo Mae",
+      "type": "consonant",
+      "class": "mid",
+      "sounds": {
+        "sound_initial": "m",
+        "sound_final": "m"
+      },
+      "mnemonic": "M for Horse",
+      "level_id": "script_01",
+      "audio_key": "mo_mae_v1",
+      "image_key": "mo_mae_stroke"
+    },
+    {
+      "id": "yo_yak",
+      "lao": "ຢ",
+      "name": "Yo Yak",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "y",
+        "sound_final": "y"
+      },
+      "mnemonic": "Y for Yak",
+      "level_id": "script_01",
+      "audio_key": "yo_yak_v1",
+      "image_key": "yo_yak_stroke"
+    },
+    {
+      "id": "ro_rueang",
+      "lao": "ຣ",
+      "name": "Ro Rueang",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "r",
+        "sound_final": "n"
+      },
+      "mnemonic": "R for Boat",
+      "level_id": "script_01",
+      "audio_key": "ro_rueang_v1",
+      "image_key": "ro_rueang_stroke"
+    },
+    {
+      "id": "lo_ling",
+      "lao": "ລ",
+      "name": "Lo Ling",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "l",
+        "sound_final": "n"
+      },
+      "mnemonic": "L for Elephant",
+      "level_id": "script_01",
+      "audio_key": "lo_ling_v1",
+      "image_key": "lo_ling_stroke"
+    },
+    {
+      "id": "wo_waen",
+      "lao": "ວ",
+      "name": "Wo Waen",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "w",
+        "sound_final": "o"
+      },
+      "mnemonic": "W for Frog",
+      "level_id": "script_01",
+      "audio_key": "wo_waen_v1",
+      "image_key": "wo_waen_stroke"
+    },
+    {
+      "id": "ho_hiae",
+      "lao": "ຫ",
+      "name": "Ho Hiae",
+      "type": "consonant",
+      "class": "high",
+      "sounds": {
+        "sound_initial": "h",
+        "sound_final": ""
+      },
+      "mnemonic": "H for Box",
+      "level_id": "script_01",
+      "audio_key": "ho_hiae_v1",
+      "image_key": "ho_hiae_stroke"
+    },
+    {
+      "id": "o_o",
+      "lao": "ອ",
+      "name": "O O",
+      "type": "consonant",
+      "class": "low",
+      "sounds": {
+        "sound_initial": "ʔ",
+        "sound_final": "m"
+      },
+      "mnemonic": "O for Bowl",
+      "level_id": "script_01",
+      "audio_key": "o_o_v1",
+      "image_key": "o_o_stroke"
+    },
+    {
+      "id": "sara_aa",
+      "lao": "າ",
+      "name": "Sara Aa",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "aa"
+      },
+      "mnemonic": "Long AA sound",
+      "level_id": "script_02",
+      "audio_key": "sara_aa_v1"
+    },
+    {
+      "id": "sara_i",
+      "lao": "ິ",
+      "name": "Sara I",
+      "type": "vowel",
+      "class": "high",
+      "sounds": {
+        "sound_vowel": "i"
+      },
+      "mnemonic": "Short I sound",
+      "level_id": "script_02",
+      "audio_key": "sara_i_v1"
+    },
+    {
+      "id": "sara_ii",
+      "lao": "ີ",
+      "name": "Sara Ii",
+      "type": "vowel",
+      "class": "high",
+      "sounds": {
+        "sound_vowel": "ii"
+      },
+      "mnemonic": "Long I sound",
+      "level_id": "script_02",
+      "audio_key": "sara_ii_v1"
+    },
+    {
+      "id": "sara_e",
+      "lao": "ະ",
+      "name": "Sara E",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "e"
+      },
+      "mnemonic": "E sound",
+      "level_id": "script_02",
+      "audio_key": "sara_e_v1"
+    },
+    {
+      "id": "sara_ae",
+      "lao": "ແ",
+      "name": "Sara Ae",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ae"
+      },
+      "mnemonic": "AE sound",
+      "level_id": "script_02",
+      "audio_key": "sara_ae_v1"
+    },
+    {
+      "id": "sara_o",
+      "lao": "ໂ",
+      "name": "Sara O",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "o"
+      },
+      "mnemonic": "O sound",
+      "level_id": "script_02",
+      "audio_key": "sara_o_v1"
+    },
+    {
+      "id": "sara_oo",
+      "lao": "ົ",
+      "name": "Sara Oo",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "oo"
+      },
+      "mnemonic": "Long O sound",
+      "level_id": "script_02",
+      "audio_key": "sara_oo_v1"
+    },
+    {
+      "id": "sara_u",
+      "lao": "ຸ",
+      "name": "Sara U",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "u"
+      },
+      "mnemonic": "Short U sound",
+      "level_id": "script_02",
+      "audio_key": "sara_u_v1"
+    },
+    {
+      "id": "sara_uu",
+      "lao": "ູ",
+      "name": "Sara Uu",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "uu"
+      },
+      "mnemonic": "Long U sound",
+      "level_id": "script_02",
+      "audio_key": "sara_uu_v1"
+    },
+    {
+      "id": "sara_ue",
+      "lao": "ື",
+      "name": "Sara Ue",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ue"
+      },
+      "mnemonic": "UE sound",
+      "level_id": "script_02",
+      "audio_key": "sara_ue_v1"
+    },
+    {
+      "id": "sara_ai",
+      "lao": "ັย",
+      "name": "Sara Ai",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ai"
+      },
+      "mnemonic": "AI sound",
+      "level_id": "script_02",
+      "audio_key": "sara_ai_v1"
+    },
+    {
+      "id": "sara_ao",
+      "lao": "າວ",
+      "name": "Sara Ao",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ao"
+      },
+      "mnemonic": "AO sound",
+      "level_id": "script_02",
+      "audio_key": "sara_ao_v1"
+    },
+    {
+      "id": "sara_ia",
+      "lao": "ີຍ",
+      "name": "Sara Ia",
+      "type": "combined_vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ia"
+      },
+      "mnemonic": "IA diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ia_v1"
+    },
+    {
+      "id": "sara_ua",
+      "lao": "ູຍ",
+      "name": "Sara Ua",
+      "type": "combined_vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ua"
+      },
+      "mnemonic": "UA diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ua_v1"
+    },
+    {
+      "id": "sara_ei",
+      "lao": "ເີ",
+      "name": "Sara Ei",
+      "type": "combined_vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "ei"
+      },
+      "mnemonic": "EI diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ei_v1"
+    },
+    {
+      "id": "sara_oai",
+      "lao": "ໂຍ",
+      "name": "Sara Oai",
+      "type": "combined_vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "oai"
+      },
+      "mnemonic": "OAI triphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_oai_v1"
+    },
+    {
+      "id": "mai_kham",
+      "lao": "ໍ",
+      "name": "Mai Kham",
+      "type": "vowel",
+      "class": "mid",
+      "sounds": {
+        "sound_vowel": "o"
+      },
+      "mnemonic": "O sound marker",
+      "level_id": "script_02",
+      "audio_key": "mai_kham_v1"
+    },
+    {
+      "id": "mai_tho",
+      "lao": "່",
+      "name": "Mai Tho",
+      "type": "tone_mark",
+      "class": "mid",
+      "sounds": {
+        "tone_effect": "falling"
+      },
+      "mnemonic": "Falling tone",
+      "level_id": "script_02",
+      "audio_key": "mai_tho_v1"
+    },
+    {
+      "id": "mai_ti",
+      "lao": "້",
+      "name": "Mai Ti",
+      "type": "tone_mark",
+      "class": "mid",
+      "sounds": {
+        "tone_effect": "high"
+      },
+      "mnemonic": "High tone",
+      "level_id": "script_02",
+      "audio_key": "mai_ti_v1"
+    },
+    {
+      "id": "mai_khit",
+      "lao": "໊",
+      "name": "Mai Khit",
+      "type": "tone_mark",
+      "class": "mid",
+      "sounds": {
+        "tone_effect": "high"
+      },
+      "mnemonic": "High tone variant",
+      "level_id": "script_02",
+      "audio_key": "mai_khit_v1"
+    },
+    {
+      "id": "mai_tham",
+      "lao": "໋",
+      "name": "Mai Tham",
+      "type": "tone_mark",
+      "class": "mid",
+      "sounds": {
+        "tone_effect": "low"
+      },
+      "mnemonic": "Low tone",
+      "level_id": "script_02",
+      "audio_key": "mai_tham_v1"
+    }
+  ],
+  "dictionary": [
+    {
+      "id": "an_01",
+      "lao": "ອັນ",
+      "phonetic": "ʔan",
+      "english": "piece/unit/one (classifier)",
+      "category": "classifier",
+      "usage_rank": 5,
+      "level_id": "basics_01",
+      "audio_key": "an_01_v1"
+    },
+    {
+      "id": "nam_01",
+      "lao": "ນ້ຳ",
+      "phonetic": "nam",
+      "english": "water",
+      "category": "noun",
+      "usage_rank": 10,
+      "level_id": "food_01",
+      "audio_key": "nam_01_v1"
+    },
+    {
+      "id": "sabaidee_01",
+      "lao": "ສະບາຍດີ",
+      "phonetic": "sa-bai-di",
+      "english": "hello/goodbye/well",
+      "category": "particle_polite",
+      "usage_rank": 1,
+      "level_id": "basics_01",
+      "audio_key": "sabaidee_01_v1"
+    },
+    {
+      "id": "khao_01",
+      "lao": "ເຂົ້າ",
+      "phonetic": "khao",
+      "english": "rice/food",
+      "category": "noun",
+      "usage_rank": 8,
+      "level_id": "food_01",
+      "audio_key": "khao_01_v1"
+    },
+    {
+      "id": "bor_01",
+      "lao": "ບໍ່",
+      "phonetic": "bo",
+      "english": "no/not/don't",
+      "category": "negation",
+      "usage_rank": 2,
+      "level_id": "basics_01",
+      "audio_key": "bor_01_v1"
+    },
+    {
+      "id": "gin_01",
+      "lao": "ກິນ",
+      "phonetic": "kin",
+      "english": "to eat",
+      "category": "verb",
+      "usage_rank": 15,
+      "level_id": "food_01",
+      "audio_key": "gin_01_v1"
+    },
+    {
+      "id": "man_01",
+      "lao": "ມີ",
+      "phonetic": "mi",
+      "english": "to have/there is",
+      "category": "verb",
+      "usage_rank": 3,
+      "level_id": "basics_01",
+      "audio_key": "man_01_v1"
+    },
+    {
+      "id": "tao_01",
+      "lao": "ເທົ່າ",
+      "phonetic": "thao",
+      "english": "how much/as much as",
+      "category": "numeral",
+      "usage_rank": 20,
+      "level_id": "food_01",
+      "audio_key": "tao_01_v1"
+    },
+    {
+      "id": "mak_01",
+      "lao": "ຫຼາຍ",
+      "phonetic": "lai",
+      "english": "very/much/many",
+      "category": "adverb",
+      "usage_rank": 6,
+      "level_id": "basics_01",
+      "audio_key": "mak_01_v1"
+    },
+    {
+      "id": "lang_01",
+      "lao": "ເລີ່ມ",
+      "phonetic": "ləm",
+      "english": "to start/begin",
+      "category": "verb",
+      "usage_rank": 25,
+      "level_id": "food_01",
+      "audio_key": "lang_01_v1"
+    },
+    {
+      "id": "man_khon_01",
+      "lao": "ຄົນ",
+      "phonetic": "khon",
+      "english": "person (classifier)",
+      "category": "classifier",
+      "usage_rank": 4,
+      "level_id": "basics_01",
+      "audio_key": "man_khon_01_v1"
+    },
+    {
+      "id": "yuu_01",
+      "lao": "ຢູ່",
+      "phonetic": "yu",
+      "english": "to be at/to stay",
+      "category": "verb",
+      "usage_rank": 7,
+      "level_id": "basics_01",
+      "audio_key": "yuu_01_v1"
+    }
+  ],
+  "phrases": [
+    {
+      "id": "ph_01",
+      "lao": "ສະບາຍດີ ຫຼາຍ",
+      "phonetic": "sa-bai-di lai",
+      "english": "very well/doing great",
+      "related_word_ids": ["sabaidee_01", "mak_01"],
+      "level_id": "basics_01",
+      "complexity": 1,
+      "audio_key": "ph_01_v1"
+    },
+    {
+      "id": "ph_02",
+      "lao": "ກິນ ເຂົ້າ",
+      "phonetic": "kin khao",
+      "english": "to eat rice (meal phrase)",
+      "related_word_ids": ["gin_01", "khao_01"],
+      "level_id": "food_01",
+      "complexity": 1,
+      "audio_key": "ph_02_v1"
+    },
+    {
+      "id": "ph_03",
+      "lao": "ນ້ຳ ຫຼາຍ",
+      "phonetic": "nam lai",
+      "english": "lots of water",
+      "related_word_ids": ["nam_01", "mak_01"],
+      "level_id": "food_01",
+      "complexity": 1,
+      "audio_key": "ph_03_v1"
+    },
+    {
+      "id": "ph_04",
+      "lao": "ມີ ບໍ່",
+      "phonetic": "mi bo",
+      "english": "do you have? (question form)",
+      "related_word_ids": ["man_01", "bor_01"],
+      "level_id": "basics_01",
+      "complexity": 1,
+      "audio_key": "ph_04_v1"
+    },
+    {
+      "id": "ph_05",
+      "lao": "ຢູ່ ບໍ່",
+      "phonetic": "yu bo",
+      "english": "not here/not staying",
+      "related_word_ids": ["yuu_01", "bor_01"],
+      "level_id": "basics_01",
+      "complexity": 1,
+      "audio_key": "ph_05_v1"
+    },
+    {
+      "id": "ph_06",
+      "lao": "ກິນ ບໍ່",
+      "phonetic": "kin bo",
+      "english": "don't eat/won't eat",
+      "related_word_ids": ["gin_01", "bor_01"],
+      "level_id": "food_01",
+      "complexity": 1,
+      "audio_key": "ph_06_v1"
+    }
+  ]
+}

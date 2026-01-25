@@ -1,0 +1,61 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "lazy",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(svg|cur|jpg|jpeg|png|webp|gif|eot|ttf|woff|woff2)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "knowledge-monolith",
+      "urls": [
+        "/assets/data/knowledge_base.json"
+      ],
+      "cacheConfig": {
+        "maxSize": 1,
+        "maxAge": "30d",
+        "timeout": "0s",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "audio-cache",
+      "urls": [
+        "/assets/audio/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 2,
+        "maxAge": "90d",
+        "timeout": "5s",
+        "strategy": "performance"
+      }
+    }
+  ],
+  "navigationUrls": [
+    "!/",
+    "!/**/*.",
+    "!/**/*__MACOSX/**"
+  ]
+}
