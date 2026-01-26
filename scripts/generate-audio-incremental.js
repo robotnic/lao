@@ -88,31 +88,30 @@ function getVoicePrompt(voice) {
 }
 
 /**
- * Generate audio using Google Cloud Text-to-Speech API
+ * Generate audio using Gemini 2.0 Flash API
  */
 function generateAudioWithGemini(text, voice) {
   return new Promise((resolve, reject) => {
-    // Google Cloud TTS payload
-    const voiceConfig = voice === 'male' 
-      ? { name: 'lo-LA-Standard-A', ssmlGender: 'MALE' }
-      : { name: 'lo-LA-Standard-B', ssmlGender: 'FEMALE' };
+    // Select voice preset based on voice parameter
+    const voicePreset = voice === 'male' ? 'Charon' : 'Aoede';
     
     const payload = {
-      input: { text: text },
-      voice: {
-        languageCode: 'lo-LA',
-        ...voiceConfig
-      },
-      audioConfig: {
-        audioEncoding: 'MP3',
-        speakingRate: 0.9,
-        pitch: 0
+      contents: [{
+        parts: [{
+          text: `Generate a natural speech audio of this text in Lao language. Speak it clearly and naturally: "${text}"`
+        }]
+      }],
+      generationConfig: {
+        responseModalities: ['AUDIO'],
+        speechConfig: {
+          voicePreset: voicePreset
+        }
       }
     };
 
     const options = {
-      hostname: 'texttospeech.googleapis.com',
-      path: `/v1/text:synthesize?key=${CONFIG.API_KEY}`,
+      hostname: 'generativelanguage.googleapis.com',
+      path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${CONFIG.API_KEY}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -132,11 +131,22 @@ function generateAudioWithGemini(text, voice) {
           try {
             const response = JSON.parse(data);
             
-            if (response.audioContent) {
-              resolve(Buffer.from(response.audioContent, 'base64'));
-            } else {
-              reject(new Error('No audio content in response'));
+            // Extract audio from Gemini response
+            if (response.candidates && response.candidates[0] && 
+                response.candidates[0].content && 
+                response.candidates[0].content.parts) {
+              
+              const parts = response.candidates[0].content.parts;
+              for (const part of parts) {
+                if (part.inlineData && part.inlineData.data) {
+                  const audioContent = part.inlineData.data;
+                  resolve(Buffer.from(audioContent, 'base64'));
+                  return;
+                }
+              }
             }
+            
+            reject(new Error('No audio content in response'));
           } catch (error) {
             reject(error);
           }
@@ -146,10 +156,10 @@ function generateAudioWithGemini(text, voice) {
             if (error.error && error.error.message) {
               reject(new Error(`API Error: ${error.error.message}`));
             } else {
-              reject(new Error(`HTTP ${res.statusCode}`));
+              reject(new Error(`HTTP ${res.statusCode}: ${data}`));
             }
           } catch {
-            reject(new Error(`HTTP ${res.statusCode}`));
+            reject(new Error(`HTTP ${res.statusCode}: ${data}`));
           }
         }
       });
