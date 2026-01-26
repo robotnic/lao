@@ -75,21 +75,24 @@ function getExistingFiles() {
  */
 async function generateAudioWithGemini(text, voiceConfig) {
   try {
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.5-flash-preview-tts' 
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash-preview-tts'
     });
+
+    // Provide a hint for Lao pronunciation
+    const laoPrompt = `Please say the following Lao text clearly: ${text}`;
 
     const result = await model.generateContent({
       contents: [{
         role: 'user',
-        parts: [{ text }]
+        parts: [{ text: laoPrompt }]
       }],
       generationConfig: {
         responseModalities: ['audio'],
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: {
-              voiceName: voiceConfig.name
+              voiceName: voiceConfig.name // Aoede or Charon
             }
           }
         }
@@ -97,40 +100,28 @@ async function generateAudioWithGemini(text, voiceConfig) {
     });
 
     const response = await result.response;
-    
-    // Debug: Log the response structure
-    console.log(`   Response structure:`, {
-      hasAudioBytes: !!response.audioBytes,
-      hasCandidates: !!response.candidates,
-      candidatesLength: response.candidates?.length,
-      firstCandidateKeys: Object.keys(response.candidates?.[0] || {})
-    });
-    
-    // Try different ways to access audio data
-    let audioData = null;
-    
-    // Method 1: Check if audioBytes is a method or property
-    if (typeof response.audioBytes === 'function') {
-      audioData = response.audioBytes();
-    } else if (response.audioBytes) {
-      audioData = response.audioBytes;
-    }
-    
-    // Method 2: Check candidates structure
-    if (!audioData && response.candidates && response.candidates[0]) {
-      const candidate = response.candidates[0];
-      if (candidate.content && candidate.content.parts && candidate.content.parts[0]) {
-        const part = candidate.content.parts[0];
-        if (part.inlineData && part.inlineData.data) {
-          audioData = part.inlineData.data;
-        }
+
+    // Check for audio in candidates
+    let audioBase64 = '';
+
+    if (response.candidates && response.candidates[0].content.parts) {
+      const audioPart = response.candidates[0].content.parts.find(p => 
+        p.inlineData && p.inlineData.mimeType && p.inlineData.mimeType.includes('audio')
+      );
+      if (audioPart) {
+        audioBase64 = audioPart.inlineData.data;
       }
     }
-    
-    if (audioData) {
-      return Buffer.from(audioData, 'base64');
+
+    // Fallback: Direct audioBytes access
+    if (!audioBase64 && response.audioBytes) {
+      audioBase64 = response.audioBytes;
+    }
+
+    if (audioBase64) {
+      return Buffer.from(audioBase64, 'base64');
     } else {
-      throw new Error('No audio content in response');
+      throw new Error('Model returned text but no audio data. Check if your API key has TTS permissions.');
     }
   } catch (error) {
     throw new Error(`API Error: ${error.message}`);
@@ -149,25 +140,13 @@ function getVoiceForEntry(index) {
  */
 async function generateAudio(entry, voiceIndex) {
   const audioPath = path.join(audioDir, `${entry.audio_key}.wav`);
-  
-  // Skip if file already exists
+
   if (fs.existsSync(audioPath)) {
     return { key: entry.audio_key, status: 'exists' };
   }
 
-  // Get text to synthesize
-  let textToSynthesize = '';
-  
-  // Prefer name_lao for consonants (letter names in Lao script)
-  if (entry.name_lao) {
-    textToSynthesize = entry.name_lao;
-  } else if (entry.lao) {
-    textToSynthesize = entry.lao;
-  } else if (entry.english) {
-    textToSynthesize = entry.english;
-  } else if (entry.name) {
-    textToSynthesize = entry.name;
-  }
+  // Simplified text selection logic
+  const textToSynthesize = entry.name_lao || entry.lao || entry.english || entry.name;
 
   if (!textToSynthesize) {
     return { key: entry.audio_key, status: 'skipped', reason: 'no text' };
@@ -175,14 +154,15 @@ async function generateAudio(entry, voiceIndex) {
 
   try {
     const voiceConfig = getVoiceForEntry(voiceIndex);
-    console.log(`🎵 Generating ${entry.audio_key} (${voiceConfig.gender} voice)...`);
-    
+    console.log(`🎵 Generating ${entry.audio_key} [${textToSynthesize}] (${voiceConfig.gender})...`);
+
     const audioBuffer = await generateAudioWithGemini(textToSynthesize, voiceConfig);
-    
-    await writeFile(audioPath, audioBuffer);
-    console.log(`✅ Generated ${entry.audio_key}`);
-    
-    return { key: entry.audio_key, status: 'success', voice };
+
+    fs.writeFileSync(audioPath, audioBuffer);
+    console.log(`✅ Saved: ${entry.audio_key}.wav`);
+
+    // Pass the gender back for the summary stats
+    return { key: entry.audio_key, status: 'success', voice: voiceConfig.gender };
   } catch (error) {
     console.error(`❌ Failed ${entry.audio_key}:`, error.message);
     return { key: entry.audio_key, status: 'error', error: error.message };
