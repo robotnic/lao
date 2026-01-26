@@ -98,6 +98,14 @@ async function generateAudioWithGemini(text, voiceConfig) {
 
     const response = await result.response;
     
+    // Debug: Log the response structure
+    console.log(`   Response structure:`, {
+      hasAudioBytes: !!response.audioBytes,
+      hasCandidates: !!response.candidates,
+      candidatesLength: response.candidates?.length,
+      firstCandidateKeys: Object.keys(response.candidates?.[0] || {})
+    });
+    
     // Try different ways to access audio data
     let audioData = null;
     
