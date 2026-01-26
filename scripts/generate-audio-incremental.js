@@ -76,7 +76,7 @@ function getExistingFiles() {
 async function generateAudioWithGemini(text, voiceConfig) {
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash-lite-preview-tts'
+      model: 'gemini-2.5-flash-tts'
     });
 
     // Provide a hint for Lao pronunciation
