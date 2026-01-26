@@ -23,8 +23,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Configuration
 const CONFIG = {
-  MAX_FILES_PER_RUN: 50,        // Generate max 50 files per workflow run (~16 min with rate limit)
-  DELAY_BETWEEN_FILES: 21000,   // 21 second delay to stay within 3 requests/minute limit
+  MAX_FILES_PER_RUN: 5,         // Generate max 5 files per workflow run
+  DELAY_BETWEEN_FILES: 25000,   // 25 second delay to stay well within 3 requests/minute limit
   API_KEY: process.env.GEMINI_API_KEY,
   VOICES: [
     { name: 'Charon', gender: 'male' },
@@ -97,7 +97,27 @@ async function generateAudioWithGemini(text, voiceConfig) {
     });
 
     const response = await result.response;
-    const audioData = response.audioBytes?.();
+    
+    // Try different ways to access audio data
+    let audioData = null;
+    
+    // Method 1: Check if audioBytes is a method or property
+    if (typeof response.audioBytes === 'function') {
+      audioData = response.audioBytes();
+    } else if (response.audioBytes) {
+      audioData = response.audioBytes;
+    }
+    
+    // Method 2: Check candidates structure
+    if (!audioData && response.candidates && response.candidates[0]) {
+      const candidate = response.candidates[0];
+      if (candidate.content && candidate.content.parts && candidate.content.parts[0]) {
+        const part = candidate.content.parts[0];
+        if (part.inlineData && part.inlineData.data) {
+          audioData = part.inlineData.data;
+        }
+      }
+    }
     
     if (audioData) {
       return Buffer.from(audioData, 'base64');
