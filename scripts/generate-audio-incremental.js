@@ -92,8 +92,8 @@ function getVoicePrompt(voice) {
  */
 function generateAudioWithGemini(text, voice) {
   return new Promise((resolve, reject) => {
-    // Select voice preset based on voice parameter
-    const voicePreset = voice === 'male' ? 'Charon' : 'Aoede';
+    // Select voice name based on voice parameter
+    const voiceName = voice === 'male' ? 'Charon' : 'Aoede';
     
     const payload = {
       contents: [{
@@ -104,7 +104,11 @@ function generateAudioWithGemini(text, voice) {
       generationConfig: {
         responseModalities: ['AUDIO'],
         speechConfig: {
-          voicePreset: voicePreset
+          voiceConfig: {
+            prebuiltVoiceConfig: {
+              voiceName: voiceName
+            }
+          }
         }
       }
     };
