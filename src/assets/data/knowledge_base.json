@@ -430,7 +430,7 @@
     },
     {
       "id": "sara_i",
-      "lao": "ິ",
+      "lao": "◌ິ",
       "name": "Sara I (short)",
       "type": "vowel",
       "vowel_length": "short",
@@ -444,7 +444,7 @@
     },
     {
       "id": "sara_ii",
-      "lao": "ີ",
+      "lao": "◌ີ",
       "name": "Sara Ii (long)",
       "type": "vowel",
       "vowel_length": "long",
@@ -458,7 +458,7 @@
     },
     {
       "id": "sara_ue_short",
-      "lao": "ຶ",
+      "lao": "◌ຶ",
       "name": "Sara Ue (short)",
       "type": "vowel",
       "vowel_length": "short",
@@ -472,7 +472,7 @@
     },
     {
       "id": "sara_ue_long",
-      "lao": "ື",
+      "lao": "◌ື",
       "name": "Sara Ue (long)",
       "type": "vowel",
       "vowel_length": "long",
@@ -486,7 +486,7 @@
     },
     {
       "id": "sara_u",
-      "lao": "ຸ",
+      "lao": "◌ຸ",
       "name": "Sara U (short)",
       "type": "vowel",
       "vowel_length": "short",
@@ -500,7 +500,7 @@
     },
     {
       "id": "sara_uu",
-      "lao": "ູ",
+      "lao": "◌ູ",
       "name": "Sara Uu (long)",
       "type": "vowel",
       "vowel_length": "long",
