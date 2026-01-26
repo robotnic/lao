@@ -47,6 +47,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/listening-comprehension/quiz.component').then(m => m.ListeningComprehensionComponent)
   },
   {
+    path: 'vowel-explorer',
+    loadComponent: () => import('./features/vowel-explorer/display.component').then(m => m.VowelDisplayComponent)
+  },
+  {
     path: '**',
     redirectTo: 'dashboard'
   }
