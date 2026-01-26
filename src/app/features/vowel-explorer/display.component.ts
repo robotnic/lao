@@ -135,8 +135,8 @@ interface VowelEntry {
 
     .vowel-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
       margin-bottom: 30px;
     }
 
@@ -144,11 +144,16 @@ interface VowelEntry {
       background: white;
       border: 2px solid #e0e0e0;
       border-radius: 12px;
-      padding: 20px;
+      padding: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: center;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 240px;
+      overflow: hidden;
     }
 
     .vowel-card:hover {
@@ -164,54 +169,60 @@ interface VowelEntry {
     }
 
     .vowel-lao {
-      font-size: 48px;
+      font-size: 42px;
       font-weight: bold;
       color: #333;
-      margin-bottom: 10px;
-      min-height: 60px;
+      margin-bottom: 6px;
+      min-height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
+      word-break: break-word;
+      line-height: 1.2;
     }
 
     .vowel-name {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: #333;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      line-height: 1.3;
+      min-height: 32px;
     }
 
     .vowel-info {
-      font-size: 12px;
+      font-size: 11px;
       color: #666;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      line-height: 1.4;
     }
 
     .ipa {
       font-family: 'Arial', sans-serif;
       font-style: italic;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .vowel-length {
-      font-size: 11px;
+      font-size: 10px;
       color: #999;
     }
 
     .mnemonic {
-      font-size: 12px;
+      font-size: 11px;
       color: #888;
       font-style: italic;
-      margin-bottom: 12px;
-      min-height: 30px;
+      margin-bottom: 8px;
+      min-height: auto;
+      line-height: 1.3;
     }
 
     .play-btn {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
-      padding: 10px;
+      font-size: 20px;
+      padding: 8px;
       border-radius: 8px;
       background: #f5f5f5;
       transition: all 0.3s ease;
@@ -254,16 +265,56 @@ interface VowelEntry {
 
     @media (max-width: 768px) {
       .vowel-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
       }
 
       .vowel-lao {
-        font-size: 36px;
+        font-size: 32px;
+        min-height: 40px;
+        margin-bottom: 4px;
+      }
+
+      .vowel-name {
+        font-size: 12px;
+        margin-bottom: 4px;
+        min-height: 28px;
       }
 
       .vowel-card {
-        padding: 15px;
+        padding: 10px;
+        min-height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .vowel-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+      }
+
+      .vowel-lao {
+        font-size: 28px;
+        min-height: 35px;
+      }
+
+      .vowel-name {
+        font-size: 11px;
+        min-height: 24px;
+      }
+
+      .vowel-info {
+        font-size: 10px;
+      }
+
+      .mnemonic {
+        font-size: 10px;
+      }
+
+      .vowel-card {
+        padding: 8px;
+        min-height: 180px;
+        gap: 4px;
       }
     }
   `]
