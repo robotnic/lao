@@ -97,7 +97,7 @@ function generateAudioWithGemini(text, voice) {
           text: text
         }]
       }],
-      config: {
+      generationConfig: {
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
