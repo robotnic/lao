@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * Incremental Audio Generation - Gemini API
+ * Incremental Audio Generation - Gemini 2.5 Flash TTS API
  * 
  * Features:
  * - Skips existing audio files (only generates missing ones)
- * - Respects 1500 requests/day rate limit
+ * - Uses gemini-2.5-flash-preview-tts for high-quality TTS
  * - Generates ~50 files per deployment
  * - Alternates between male and female voices
  * - Can build up to 200+ files over many deployments
- * 
- * Rate Limiting:
- * - 1500 requests/day limit
- * - Max 50 files per workflow run
- * - ~30 second delay between files (ensures under 1500/day)
+ * - No rate limits for free tier
  */
 
 const fs = require('fs');
@@ -29,7 +25,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 // Configuration
 const CONFIG = {
   MAX_FILES_PER_RUN: 50,        // Generate max 50 files per workflow run
-  DELAY_BETWEEN_FILES: 2000,    // 2 second delay (safe for rate limits)
+  DELAY_BETWEEN_FILES: 1000,    // 1 second delay for safety
   API_KEY: process.env.GEMINI_API_KEY,
   VOICES: ['male', 'female'],   // Alternate between voices
 };
@@ -63,7 +59,7 @@ if (!fs.existsSync(audioDir)) {
 function getExistingFiles() {
   try {
     const files = fs.readdirSync(audioDir);
-    return new Set(files.filter(f => f.endsWith('.mp3')).map(f => f.replace('.mp3', '')));
+    return new Set(files.filter(f => f.endsWith('.wav')).map(f => f.replace('.wav', '')));
   } catch {
     return new Set();
   }
@@ -88,20 +84,20 @@ function getVoicePrompt(voice) {
 }
 
 /**
- * Generate audio using Gemini 2.0 Flash API
+ * Generate audio using Gemini 2.5 Flash TTS API
  */
 function generateAudioWithGemini(text, voice) {
   return new Promise((resolve, reject) => {
-    // Select voice name based on voice parameter
+    // Map voice to Gemini voice names: Puck, Charon, Kore, Fenrir, Aoede
     const voiceName = voice === 'male' ? 'Charon' : 'Aoede';
     
     const payload = {
       contents: [{
         parts: [{
-          text: `Generate a natural speech audio of this text in Lao language. Speak it clearly and naturally: "${text}"`
+          text: text
         }]
       }],
-      generationConfig: {
+      config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
@@ -115,7 +111,7 @@ function generateAudioWithGemini(text, voice) {
 
     const options = {
       hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${CONFIG.API_KEY}`,
+      path: `/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${CONFIG.API_KEY}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -136,21 +132,12 @@ function generateAudioWithGemini(text, voice) {
             const response = JSON.parse(data);
             
             // Extract audio from Gemini response
-            if (response.candidates && response.candidates[0] && 
-                response.candidates[0].content && 
-                response.candidates[0].content.parts) {
-              
-              const parts = response.candidates[0].content.parts;
-              for (const part of parts) {
-                if (part.inlineData && part.inlineData.data) {
-                  const audioContent = part.inlineData.data;
-                  resolve(Buffer.from(audioContent, 'base64'));
-                  return;
-                }
-              }
+            const audioData = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+            if (audioData) {
+              resolve(Buffer.from(audioData, 'base64'));
+            } else {
+              reject(new Error('No audio content in response'));
             }
-            
-            reject(new Error('No audio content in response'));
           } catch (error) {
             reject(error);
           }
@@ -179,7 +166,7 @@ function generateAudioWithGemini(text, voice) {
  * Generate audio for a single entry
  */
 async function generateAudio(entry, voiceIndex) {
-  const audioPath = path.join(audioDir, `${entry.audio_key}.mp3`);
+  const audioPath = path.join(audioDir, `${entry.audio_key}.wav`);
   
   // Skip if file already exists
   if (fs.existsSync(audioPath)) {
