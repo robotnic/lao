@@ -1,6 +1,6 @@
 # Project Todo List: Lao Language Learning App
 
-**Status:** Phase 4 - Quality & Testing In Progress | **Last Updated:** 2026-01-25
+**Status:** Phase 4 - Quality & Testing In Progress | **Last Updated:** 2026-01-26
 
 ---
 
@@ -210,9 +210,9 @@
 - [x] Cover: Signal binding, tile navigation, theme switching, responsive layout
 
 ### 25. Create Unit Tests for Alphabet Explorer Activity
-- [ ] Test Discovery phase (grid rendering, click handlers, TTS)
-- [ ] Test Mastery phase (quiz logic, scoring, localStorage save)
-- [ ] Cover both theme personas
+- [x] Test Discovery phase (grid rendering, click handlers, TTS)
+- [x] Test Mastery phase (quiz logic, scoring, localStorage save)
+- [x] Cover both theme personas
 
 ### 26. Implement E2E Tests (Cypress/Playwright)
 - [ ] Test user flows: Launch app → Select level → Complete activity → View progress → Change theme → Export data
@@ -406,4 +406,4 @@
 
 ---
 
-**Progress:** 34/50 items completed | Last Updated: 2026-01-25
+**Progress:** 36/50 items completed (72%) | Last Updated: 2026-01-26
