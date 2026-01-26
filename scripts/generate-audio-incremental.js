@@ -19,8 +19,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Configuration
 const CONFIG = {
-  MAX_FILES_PER_RUN: 50,         // Increased to 50 (safe for a workflow run)
-  DELAY_BETWEEN_FILES: 5000,     // 5 seconds (sufficient at 15 requests/min)
+  MAX_FILES_PER_RUN: 5,         // Increased to 50 (safe for a workflow run)
+  DELAY_BETWEEN_FILES: 15000,     // 5 seconds (sufficient at 15 requests/min)
   API_KEY: process.env.GEMINI_API_KEY,
   // 2026 Voice Names (Charon & Aoede are standard, Puck & Fenrir are alternatives)
   VOICES: [
@@ -71,7 +71,7 @@ function getExistingFiles() {
 async function generateAudioWithGemini(text, voiceConfig) {
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash-preview-tts'
+      model: 'gemini-2.5-flash'
     }, { apiVersion: 'v1beta' });
 
     const result = await model.generateContent({
