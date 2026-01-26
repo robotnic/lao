@@ -1,6 +1,6 @@
 # Project Todo List: Lao Language Learning App
 
-**Status:** Phase 3 - Features In Progress | **Last Updated:** 2026-01-25
+**Status:** Phase 4 - Quality & Testing In Progress | **Last Updated:** 2026-01-25
 
 ---
 
@@ -115,15 +115,15 @@
 - [x] Config Screen Component completed (Task 11)
 
 ### 16. Setup Routing for Shell Components
-- [ ] Configure lazy-loaded routes for Dashboard, Progress, Config
-- [ ] Add navigation guards for auth (future)
-- [ ] Implement breadcrumbs/back button
+- [x] Configure lazy-loaded routes for Dashboard, Progress, Config
+- [x] Add navigation guards for auth (future)
+- [x] Implement breadcrumbs/back button
 
 ### 17. Implement TTS (Text-to-Speech) Service
-- [ ] Integrate Web Speech API or Google TTS
-- [ ] Support Lao language output
-- [ ] Expose service via Bridge API for Features to request audio
-- [ ] Implement volume & speed controls
+- [x] Integrate Web Speech API or Google TTS
+- [x] Support Lao language output
+- [x] Expose service via Bridge API for Features to request audio
+- [x] Implement volume & speed controls
 
 ---
 
@@ -175,15 +175,15 @@
 - [x] Slow-down playback (0.5x-1.5x)
 
 ### 25. Setup Audio Asset Pipeline
-- [ ] Define audio file structure: `/assets/audio/${audio_key}.mp3`
-- [ ] Create script to batch-generate audio for all knowledge_base entries
-- [ ] Compress for mobile (~2-5MB at 128kbps)
+- [x] Define audio file structure: `/assets/audio/${audio_key}.mp3`
+- [x] Create script to batch-generate audio for all knowledge_base entries
+- [x] Compress for mobile (~2-5MB at 128kbps)
 
 ### 26. Implement Advanced Progress Tracking
-- [ ] Difficulty level recommendations
-- [ ] Spaced repetition scheduling
-- [ ] Performance analytics dashboard
-- [ ] Achievement badges system
+- [x] Difficulty level recommendations
+- [x] Spaced repetition scheduling
+- [x] Performance analytics dashboard
+- [x] Achievement badges system
 
 ### 20. Implement Alphabet Explorer Styling
 - [ ] Style grid with `aspect-ratio: 1/1` cells
@@ -202,12 +202,12 @@
 - [ ] Show hint text
 
 ### 23. Create Unit Tests for Core Services
-- [ ] Test JsonDataProviderService, ProgressService, ModuleLauncher, ActivityBridge
-- [ ] Cover: data loading, Signal reactivity, localStorage sync, error handling
+- [x] Test JsonDataProviderService, ProgressService, ModuleLauncher, ActivityBridge
+- [x] Cover: data loading, Signal reactivity, localStorage sync, error handling
 
 ### 24. Create Unit Tests for Shell Components
-- [ ] Test Dashboard, Hero, Resume, Alphabet, Game Hub tiles
-- [ ] Cover: Signal binding, tile navigation, theme switching, responsive layout
+- [x] Test Dashboard, Hero, Resume, Alphabet, Game Hub tiles
+- [x] Cover: Signal binding, tile navigation, theme switching, responsive layout
 
 ### 25. Create Unit Tests for Alphabet Explorer Activity
 - [ ] Test Discovery phase (grid rendering, click handlers, TTS)
@@ -406,4 +406,4 @@
 
 ---
 
-**Progress:** 0/50 items completed | Last Updated: 2026-01-25
+**Progress:** 34/50 items completed | Last Updated: 2026-01-25
