@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { JsonDataProviderService } from '../../core/services/json-data-provider.service';
 import { AudioService } from '../../core/services/audio.service';
 
@@ -21,9 +22,17 @@ interface VowelEntry {
 @Component({
   selector: 'app-vowel-display',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="vowel-container">
+      <!-- Header with Logo -->
+      <div class="header">
+        <button class="logo-btn" routerLink="/dashboard" title="Go to Dashboard">
+          <span class="flag-logo">🇱🇦</span>
+          <span class="app-title">ailao</span>
+        </button>
+      </div>
+
       <h1>Lao Vowels</h1>
       <p class="subtitle">Click on any vowel to hear its pronunciation</p>
       
@@ -89,6 +98,48 @@ interface VowelEntry {
       margin: 0 auto;
       padding: 20px;
       font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .header {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .logo-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .logo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
+    }
+
+    .logo-btn:active {
+      transform: translateY(0);
+    }
+
+    .flag-logo {
+      font-size: 32px;
+      display: inline-flex;
+    }
+
+    .app-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
     h1 {
