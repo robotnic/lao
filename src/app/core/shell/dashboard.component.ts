@@ -461,6 +461,7 @@ import { ThemeService } from '../../core/services/theme.service';
 export class DashboardComponent implements OnInit {
   activities = [
     { id: 'alphabet', name: 'Alphabet', icon: '🔤', hint: 'Learn characters', enabled: true },
+    { id: 'vowels', name: 'Vowels', icon: '🎙️', hint: 'Vowel sounds', enabled: true },
     { id: 'vocabulary', name: 'Vocabulary', icon: '📚', hint: 'Word building', enabled: true },
     { id: 'tones', name: 'Tones', icon: '🎵', hint: 'Tone matching', enabled: true },
     { id: 'phrases', name: 'Phrases', icon: '💬', hint: 'Common phrases', enabled: true },
@@ -482,6 +483,7 @@ export class DashboardComponent implements OnInit {
   startActivity(activityId: string): void {
     const routes: { [key: string]: string } = {
       alphabet: '/alphabet-explorer',
+      vowels: '/vowel-explorer',
       vocabulary: '/vocabulary-quiz',
       tones: '/tone-matcher',
       phrases: '/phrase-builder',
