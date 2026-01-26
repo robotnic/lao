@@ -31,6 +31,9 @@ interface VowelEntry {
           <span class="flag-logo">🇱🇦</span>
           <span class="app-title">ailao</span>
         </button>
+        <button class="tagline-btn" routerLink="/dashboard" title="Go to Dashboard">
+          Lao Language Learning
+        </button>
       </div>
 
       <h1>Lao Vowels</h1>
@@ -102,7 +105,8 @@ interface VowelEntry {
 
     .header {
       display: flex;
-      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 30px;
     }
 
@@ -140,6 +144,31 @@ interface VowelEntry {
       font-size: 20px;
       font-weight: 700;
       letter-spacing: 1px;
+    }
+
+    .tagline-btn {
+      padding: 12px 20px;
+      background: transparent;
+      color: #333;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .tagline-btn:hover {
+      border-color: #4CAF50;
+      color: #4CAF50;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    }
+
+    .tagline-btn:active {
+      transform: translateY(0);
     }
 
     h1 {
