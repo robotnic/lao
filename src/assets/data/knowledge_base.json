@@ -394,26 +394,42 @@
       "name_lao": "ອໍ້ອໍ"
     },
     {
+      "id": "sara_a_short",
+      "lao": "◌ະ (ັ)",
+      "name": "Sara A (short)",
+      "type": "vowel",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "a",
+        "ipa": "/aʔ/, /a/"
+      },
+      "mnemonic": "Short A with glottal stop",
+      "level_id": "script_02",
+      "audio_key": "sara_a_short_v1"
+    },
+    {
       "id": "sara_aa",
       "lao": "າ",
-      "name": "Sara Aa",
+      "name": "Sara Aa (long)",
       "type": "vowel",
-      "class": "mid",
+      "vowel_length": "long",
       "sounds": {
-        "sound_vowel": "aa"
+        "sound_vowel": "aa",
+        "ipa": "/aː/"
       },
-      "mnemonic": "Long AA sound",
+      "mnemonic": "Long AA sound - extended duration",
       "level_id": "script_02",
       "audio_key": "sara_aa_v1"
     },
     {
       "id": "sara_i",
       "lao": "ິ",
-      "name": "Sara I",
+      "name": "Sara I (short)",
       "type": "vowel",
-      "class": "high",
+      "vowel_length": "short",
       "sounds": {
-        "sound_vowel": "i"
+        "sound_vowel": "i",
+        "ipa": "/i/"
       },
       "mnemonic": "Short I sound",
       "level_id": "script_02",
@@ -422,76 +438,54 @@
     {
       "id": "sara_ii",
       "lao": "ີ",
-      "name": "Sara Ii",
+      "name": "Sara Ii (long)",
       "type": "vowel",
-      "class": "high",
+      "vowel_length": "long",
       "sounds": {
-        "sound_vowel": "ii"
+        "sound_vowel": "ii",
+        "ipa": "/iː/"
       },
-      "mnemonic": "Long I sound",
+      "mnemonic": "Long I sound - extended duration",
       "level_id": "script_02",
       "audio_key": "sara_ii_v1"
     },
     {
-      "id": "sara_e",
-      "lao": "ະ",
-      "name": "Sara E",
+      "id": "sara_ue_short",
+      "lao": "ຶ",
+      "name": "Sara Ue (short)",
       "type": "vowel",
-      "class": "mid",
+      "vowel_length": "short",
       "sounds": {
-        "sound_vowel": "e"
+        "sound_vowel": "ue",
+        "ipa": "/ɯ/"
       },
-      "mnemonic": "E sound",
+      "mnemonic": "Short ue sound (between u and i)",
       "level_id": "script_02",
-      "audio_key": "sara_e_v1"
+      "audio_key": "sara_ue_short_v1"
     },
     {
-      "id": "sara_ae",
-      "lao": "ແ",
-      "name": "Sara Ae",
+      "id": "sara_ue_long",
+      "lao": "ື",
+      "name": "Sara Ue (long)",
       "type": "vowel",
-      "class": "mid",
+      "vowel_length": "long",
       "sounds": {
-        "sound_vowel": "ae"
+        "sound_vowel": "ue",
+        "ipa": "/ɯː/"
       },
-      "mnemonic": "AE sound",
+      "mnemonic": "Long ue sound - extended duration",
       "level_id": "script_02",
-      "audio_key": "sara_ae_v1"
-    },
-    {
-      "id": "sara_o",
-      "lao": "ໂ",
-      "name": "Sara O",
-      "type": "vowel",
-      "class": "mid",
-      "sounds": {
-        "sound_vowel": "o"
-      },
-      "mnemonic": "O sound",
-      "level_id": "script_02",
-      "audio_key": "sara_o_v1"
-    },
-    {
-      "id": "sara_oo",
-      "lao": "ົ",
-      "name": "Sara Oo",
-      "type": "vowel",
-      "class": "mid",
-      "sounds": {
-        "sound_vowel": "oo"
-      },
-      "mnemonic": "Long O sound",
-      "level_id": "script_02",
-      "audio_key": "sara_oo_v1"
+      "audio_key": "sara_ue_long_v1"
     },
     {
       "id": "sara_u",
       "lao": "ຸ",
-      "name": "Sara U",
+      "name": "Sara U (short)",
       "type": "vowel",
-      "class": "mid",
+      "vowel_length": "short",
       "sounds": {
-        "sound_vowel": "u"
+        "sound_vowel": "u",
+        "ipa": "/u/"
       },
       "mnemonic": "Short U sound",
       "level_id": "script_02",
@@ -500,106 +494,279 @@
     {
       "id": "sara_uu",
       "lao": "ູ",
-      "name": "Sara Uu",
+      "name": "Sara Uu (long)",
       "type": "vowel",
-      "class": "mid",
+      "vowel_length": "long",
       "sounds": {
-        "sound_vowel": "uu"
+        "sound_vowel": "uu",
+        "ipa": "/uː/"
       },
-      "mnemonic": "Long U sound",
+      "mnemonic": "Long U sound - extended duration",
       "level_id": "script_02",
       "audio_key": "sara_uu_v1"
     },
     {
-      "id": "sara_ue",
-      "lao": "ື",
-      "name": "Sara Ue",
+      "id": "sara_e_short",
+      "lao": "ເ◌ະ (ັ)",
+      "name": "Sara E (short)",
       "type": "vowel",
-      "class": "mid",
+      "vowel_length": "short",
       "sounds": {
-        "sound_vowel": "ue"
+        "sound_vowel": "e",
+        "ipa": "/eʔ/, /e/"
       },
-      "mnemonic": "UE sound",
+      "mnemonic": "Short E sound with glottal stop",
       "level_id": "script_02",
-      "audio_key": "sara_ue_v1"
+      "audio_key": "sara_e_short_v1"
+    },
+    {
+      "id": "sara_e_long",
+      "lao": "ເ◌",
+      "name": "Sara E (long)",
+      "type": "vowel",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "e",
+        "ipa": "/eː/"
+      },
+      "mnemonic": "Long E sound - extended duration",
+      "level_id": "script_02",
+      "audio_key": "sara_e_long_v1"
+    },
+    {
+      "id": "sara_ae_short",
+      "lao": "ແ◌ະ (ັ)",
+      "name": "Sara Ae (short)",
+      "type": "vowel",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "ae",
+        "ipa": "/ɛʔ/, /ɛ/"
+      },
+      "mnemonic": "Short AE sound with glottal stop",
+      "level_id": "script_02",
+      "audio_key": "sara_ae_short_v1"
+    },
+    {
+      "id": "sara_ae_long",
+      "lao": "ແ◌",
+      "name": "Sara Ae (long)",
+      "type": "vowel",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "ae",
+        "ipa": "/ɛː/"
+      },
+      "mnemonic": "Long AE sound - extended duration",
+      "level_id": "script_02",
+      "audio_key": "sara_ae_long_v1"
+    },
+    {
+      "id": "sara_o_short",
+      "lao": "ໂ◌ะ (ົ)",
+      "name": "Sara O (short)",
+      "type": "vowel",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "o",
+        "ipa": "/oʔ/, /o/"
+      },
+      "mnemonic": "Short O sound with glottal stop",
+      "level_id": "script_02",
+      "audio_key": "sara_o_short_v1"
+    },
+    {
+      "id": "sara_o_long",
+      "lao": "ໂ◌",
+      "name": "Sara O (long)",
+      "type": "vowel",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "o",
+        "ipa": "/oː/"
+      },
+      "mnemonic": "Long O sound - extended duration",
+      "level_id": "script_02",
+      "audio_key": "sara_o_long_v1"
+    },
+    {
+      "id": "sara_o_short2",
+      "lao": "ເ◌າະ (ັອ)",
+      "name": "Sara O-short variant",
+      "type": "vowel",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "o",
+        "ipa": "/ɔʔ/, /ɔ/"
+      },
+      "mnemonic": "Short O variant - darker vowel",
+      "level_id": "script_02",
+      "audio_key": "sara_o_short2_v1"
+    },
+    {
+      "id": "sara_o_long2",
+      "lao": "◌ໍ (ອ)",
+      "name": "Sara O (long variant)",
+      "type": "vowel",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "o",
+        "ipa": "/ɔː/"
+      },
+      "mnemonic": "Long O variant - extended duration",
+      "level_id": "script_02",
+      "audio_key": "sara_o_long2_v1"
+    },
+    {
+      "id": "sara_oe_short",
+      "lao": "ເ◌ິ",
+      "name": "Sara Oe (short)",
+      "type": "vowel",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "oe",
+        "ipa": "/ɤʔ/"
+      },
+      "mnemonic": "Short OE sound",
+      "level_id": "script_02",
+      "audio_key": "sara_oe_short_v1"
+    },
+    {
+      "id": "sara_oe_long",
+      "lao": "ເ◌ີ",
+      "name": "Sara Oe (long)",
+      "type": "vowel",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "oe",
+        "ipa": "/ɤː/"
+      },
+      "mnemonic": "Long OE sound - extended duration",
+      "level_id": "script_02",
+      "audio_key": "sara_oe_long_v1"
+    },
+    {
+      "id": "sara_ia_short",
+      "lao": "ເ◌ັຍ",
+      "name": "Sara Ia (short)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "ia",
+        "ipa": "/iaʔ/"
+      },
+      "mnemonic": "Short IA diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ia_short_v1"
+    },
+    {
+      "id": "sara_ia_long",
+      "lao": "ເ◌ຍ (ຽ)",
+      "name": "Sara Ia (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "ia",
+        "ipa": "/ia/"
+      },
+      "mnemonic": "Long IA diphthong - extended",
+      "level_id": "script_02",
+      "audio_key": "sara_ia_long_v1"
+    },
+    {
+      "id": "sara_ua_short",
+      "lao": "ເ◌ຶອ",
+      "name": "Sara Ua (short)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "ua",
+        "ipa": "/ɯaʔ/"
+      },
+      "mnemonic": "Short UA diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ua_short_v1"
+    },
+    {
+      "id": "sara_ua_long",
+      "lao": "ເ◌ືອ",
+      "name": "Sara Ua (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "ua",
+        "ipa": "/ɯa/"
+      },
+      "mnemonic": "Long UA diphthong - extended",
+      "level_id": "script_02",
+      "audio_key": "sara_ua_long_v1"
+    },
+    {
+      "id": "sara_uea_short",
+      "lao": "◌ົວະ",
+      "name": "Sara Uea (short)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "uea",
+        "ipa": "/uaʔ/"
+      },
+      "mnemonic": "Short UEA diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_uea_short_v1"
+    },
+    {
+      "id": "sara_uea_long",
+      "lao": "◌ົວ",
+      "name": "Sara Uea (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "uea",
+        "ipa": "/ua/"
+      },
+      "mnemonic": "Long UEA diphthong - extended",
+      "level_id": "script_02",
+      "audio_key": "sara_uea_long_v1"
     },
     {
       "id": "sara_ai",
-      "lao": "ັย",
+      "lao": "ໄ◌ / ໃ◌",
       "name": "Sara Ai",
-      "type": "vowel",
-      "class": "mid",
+      "type": "special_vowel",
       "sounds": {
-        "sound_vowel": "ai"
+        "sound_vowel": "ai",
+        "ipa": "/aj/"
       },
-      "mnemonic": "AI sound",
+      "mnemonic": "AI sound - unwound stem",
       "level_id": "script_02",
       "audio_key": "sara_ai_v1"
     },
     {
       "id": "sara_ao",
-      "lao": "າວ",
+      "lao": "ເ◌ົາ",
       "name": "Sara Ao",
-      "type": "vowel",
-      "class": "mid",
+      "type": "special_vowel",
       "sounds": {
-        "sound_vowel": "ao"
+        "sound_vowel": "ao",
+        "ipa": "/aw/"
       },
       "mnemonic": "AO sound",
       "level_id": "script_02",
       "audio_key": "sara_ao_v1"
     },
     {
-      "id": "sara_ia",
-      "lao": "ີຍ",
-      "name": "Sara Ia",
-      "type": "combined_vowel",
-      "class": "mid",
+      "id": "sara_am",
+      "lao": "◌ໍາ",
+      "name": "Sara Am",
+      "type": "special_vowel",
       "sounds": {
-        "sound_vowel": "ia"
+        "sound_vowel": "am",
+        "ipa": "/am/"
       },
-      "mnemonic": "IA diphthong",
+      "mnemonic": "AM sound - nasal ending",
       "level_id": "script_02",
-      "audio_key": "sara_ia_v1"
-    },
-    {
-      "id": "sara_ua",
-      "lao": "ູຍ",
-      "name": "Sara Ua",
-      "type": "combined_vowel",
-      "class": "mid",
-      "sounds": {
-        "sound_vowel": "ua"
-      },
-      "mnemonic": "UA diphthong",
-      "level_id": "script_02",
-      "audio_key": "sara_ua_v1"
-    },
-    {
-      "id": "sara_ei",
-      "lao": "ເີ",
-      "name": "Sara Ei",
-      "type": "combined_vowel",
-      "class": "mid",
-      "sounds": {
-        "sound_vowel": "ei"
-      },
-      "mnemonic": "EI diphthong",
-      "level_id": "script_02",
-      "audio_key": "sara_ei_v1"
-    },
-    {
-      "id": "sara_oai",
-      "lao": "ໂຍ",
-      "name": "Sara Oai",
-      "type": "combined_vowel",
-      "class": "mid",
-      "sounds": {
-        "sound_vowel": "oai"
-      },
-      "mnemonic": "OAI triphthong",
-      "level_id": "script_02",
-      "audio_key": "sara_oai_v1"
+      "audio_key": "sara_am_v1"
     },
     {
       "id": "mai_kham",
