@@ -76,23 +76,20 @@ function getExistingFiles() {
 async function generateAudioWithGemini(text, voiceConfig) {
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash-tts'
-    });
-
-    // Provide a hint for Lao pronunciation
-    const laoPrompt = `Please say the following Lao text clearly: ${text}`;
+      model: 'gemini-2.5-flash-preview-tts'
+    }, { apiVersion: 'v1beta' });
 
     const result = await model.generateContent({
       contents: [{
         role: 'user',
-        parts: [{ text: laoPrompt }]
+        parts: [{ text }]
       }],
       generationConfig: {
         responseModalities: ['audio'],
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: {
-              voiceName: voiceConfig.name // Aoede or Charon
+              voiceName: voiceConfig.name
             }
           }
         }
@@ -100,28 +97,14 @@ async function generateAudioWithGemini(text, voiceConfig) {
     });
 
     const response = await result.response;
-
-    // Check for audio in candidates
-    let audioBase64 = '';
-
-    if (response.candidates && response.candidates[0].content.parts) {
-      const audioPart = response.candidates[0].content.parts.find(p => 
-        p.inlineData && p.inlineData.mimeType && p.inlineData.mimeType.includes('audio')
-      );
-      if (audioPart) {
-        audioBase64 = audioPart.inlineData.data;
-      }
-    }
-
-    // Fallback: Direct audioBytes access
-    if (!audioBase64 && response.audioBytes) {
-      audioBase64 = response.audioBytes;
-    }
-
-    if (audioBase64) {
-      return Buffer.from(audioBase64, 'base64');
+    
+    // Native audioBytes retrieval
+    const audioData = response.audioBytes();
+    
+    if (audioData) {
+      return Buffer.from(audioData, 'base64');
     } else {
-      throw new Error('Model returned text but no audio data. Check if your API key has TTS permissions.');
+      throw new Error('No audio data returned from API');
     }
   } catch (error) {
     throw new Error(`API Error: ${error.message}`);
