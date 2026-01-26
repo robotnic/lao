@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const writeFile = util.promisify(fs.writeFile);
 
@@ -38,7 +38,7 @@ if (!CONFIG.API_KEY) {
 }
 
 // Initialize Gemini client
-const genAI = new GoogleGenAI(CONFIG.API_KEY);
+const genAI = new GoogleGenerativeAI(CONFIG.API_KEY);
 
 // Load knowledge base
 let knowledgeBase;
