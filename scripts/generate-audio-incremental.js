@@ -23,8 +23,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Configuration
 const CONFIG = {
-  MAX_FILES_PER_RUN: 5,         // Generate max 5 files per workflow run
-  DELAY_BETWEEN_FILES: 25000,   // 25 second delay to stay well within 3 requests/minute limit
+  MAX_FILES_PER_RUN: 2,         // Generate max 5 files per workflow run
+  DELAY_BETWEEN_FILES: 125000,   // 25 second delay to stay well within 3 requests/minute limit
   API_KEY: process.env.GEMINI_API_KEY,
   VOICES: [
     { name: 'Charon', gender: 'male' },
