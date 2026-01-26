@@ -1,14 +1,14 @@
 {
   "meta": {
-    "version": "2.2.2",
-    "last_updated": "2026-01-25",
+    "version": "2.2.3",
+    "last_updated": "2026-01-26",
     "base_language": "lo-LA",
     "target_language": "en-US",
     "description": "Lao Language Learning Knowledge Base - Unified Monolith",
     "total_characters": 43,
     "total_words": 12,
     "total_phrases": 6,
-    "total_levels": 4
+    "total_levels": 5
   },
   "levels": [
     {
@@ -26,17 +26,24 @@
       "description": "Basic vowel sounds and marks"
     },
     {
+      "id": "script_03",
+      "title": "Alphabet: Vowels 2 - Short & Long",
+      "type": "alphabet",
+      "order": 3,
+      "description": "Master phonemic vowel length distinctions with short vs long vowel pairs"
+    },
+    {
       "id": "basics_01",
       "title": "Survival: Greetings",
       "type": "vocabulary",
-      "order": 3,
+      "order": 4,
       "description": "Essential greetings and politeness particles"
     },
     {
       "id": "food_01",
       "title": "Survival: Food & Drink",
       "type": "vocabulary",
-      "order": 4,
+      "order": 5,
       "description": "Common food items and eating-related words"
     }
   ],
@@ -769,17 +776,116 @@
       "audio_key": "sara_am_v1"
     },
     {
-      "id": "mai_kham",
-      "lao": "ໍ",
-      "name": "Mai Kham",
-      "type": "vowel",
-      "class": "mid",
+      "id": "sara_vowel_pair_a",
+      "lao": "ะ ↔ າ",
+      "name": "A Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_a_short", "sara_aa"],
       "sounds": {
-        "sound_vowel": "o"
+        "short": "/aʔ/",
+        "long": "/aː/"
       },
-      "mnemonic": "O sound marker",
-      "level_id": "script_02",
-      "audio_key": "mai_kham_v1"
+      "mnemonic": "ะ short glottal stop vs າ extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_a_v1"
+    },
+    {
+      "id": "sara_vowel_pair_i",
+      "lao": "ິ ↔ ີ",
+      "name": "I Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_i", "sara_ii"],
+      "sounds": {
+        "short": "/i/",
+        "long": "/iː/"
+      },
+      "mnemonic": "ິ short vs ີ long extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_i_v1"
+    },
+    {
+      "id": "sara_vowel_pair_u",
+      "lao": "ຸ ↔ ູ",
+      "name": "U Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_u", "sara_uu"],
+      "sounds": {
+        "short": "/u/",
+        "long": "/uː/"
+      },
+      "mnemonic": "ຸ short vs ູ long extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_u_v1"
+    },
+    {
+      "id": "sara_vowel_pair_ue",
+      "lao": "ຶ ↔ ື",
+      "name": "Ue Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_ue_short", "sara_ue_long"],
+      "sounds": {
+        "short": "/ɯ/",
+        "long": "/ɯː/"
+      },
+      "mnemonic": "ຶ short vs ື long (between u and i)",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_ue_v1"
+    },
+    {
+      "id": "sara_vowel_pair_e",
+      "lao": "ເະ ↔ ເ",
+      "name": "E Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_e_short", "sara_e_long"],
+      "sounds": {
+        "short": "/eʔ/",
+        "long": "/eː/"
+      },
+      "mnemonic": "ເະ short glottal vs ເ long extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_e_v1"
+    },
+    {
+      "id": "sara_vowel_pair_ae",
+      "lao": "ແະ ↔ ແ",
+      "name": "Ae Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_ae_short", "sara_ae_long"],
+      "sounds": {
+        "short": "/ɛʔ/",
+        "long": "/ɛː/"
+      },
+      "mnemonic": "ແະ short glottal vs ແ long extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_ae_v1"
+    },
+    {
+      "id": "sara_vowel_pair_o",
+      "lao": "ໂະ ↔ ໂ",
+      "name": "O Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_o_short", "sara_o_long"],
+      "sounds": {
+        "short": "/oʔ/",
+        "long": "/oː/"
+      },
+      "mnemonic": "ໂະ short glottal vs ໂ long extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_o_v1"
+    },
+    {
+      "id": "sara_vowel_pair_oe",
+      "lao": "ເິ ↔ ເີ",
+      "name": "Oe Pair - Short vs Long",
+      "type": "vowel_pair",
+      "vowel_comparison": ["sara_oe_short", "sara_oe_long"],
+      "sounds": {
+        "short": "/ɤʔ/",
+        "long": "/ɤː/"
+      },
+      "mnemonic": "ເິ short vs ເີ long extended",
+      "level_id": "script_03",
+      "audio_key": "sara_vowel_pair_oe_v1"
     },
     {
       "id": "mai_tho",
