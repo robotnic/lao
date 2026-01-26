@@ -1,11 +1,11 @@
 {
   "meta": {
-    "version": "2.2.3",
+    "version": "2.2.4",
     "last_updated": "2026-01-26",
     "base_language": "lo-LA",
     "target_language": "en-US",
     "description": "Lao Language Learning Knowledge Base - Unified Monolith",
-    "total_characters": 43,
+    "total_characters": 73,
     "total_words": 12,
     "total_phrases": 6,
     "total_levels": 5
@@ -735,6 +735,118 @@
       "mnemonic": "Long UEA diphthong - extended",
       "level_id": "script_02",
       "audio_key": "sara_uea_long_v1"
+    },
+    {
+      "id": "sara_eo_short",
+      "lao": "ເ◌ົ",
+      "name": "Sara Eo (short)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "eo",
+        "ipa": "/ɛɔʔ/"
+      },
+      "mnemonic": "Short EO diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_eo_short_v1"
+    },
+    {
+      "id": "sara_eo_long",
+      "lao": "ເ◌ົ",
+      "name": "Sara Eo (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "eo",
+        "ipa": "/ɛɔ/"
+      },
+      "mnemonic": "Long EO diphthong - extended",
+      "level_id": "script_02",
+      "audio_key": "sara_eo_long_v1"
+    },
+    {
+      "id": "sara_ai_long",
+      "lao": "ໄ◌",
+      "name": "Sara Ai (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "ai",
+        "ipa": "/aj/"
+      },
+      "mnemonic": "Long AI diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ai_long_v1"
+    },
+    {
+      "id": "sara_ai_short",
+      "lao": "ໃ◌",
+      "name": "Sara Ai (short variant)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "ai",
+        "ipa": "/aɰ/"
+      },
+      "mnemonic": "Short AI variant (northern dialect)",
+      "level_id": "script_02",
+      "audio_key": "sara_ai_short_v1"
+    },
+    {
+      "id": "sara_oi_short",
+      "lao": "ໂ◌ຍ",
+      "name": "Sara Oi (short)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "oi",
+        "ipa": "/ɔjʔ/"
+      },
+      "mnemonic": "Short OI diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_oi_short_v1"
+    },
+    {
+      "id": "sara_oi_long",
+      "lao": "ໂ◌ຽ",
+      "name": "Sara Oi (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "oi",
+        "ipa": "/ɔj/"
+      },
+      "mnemonic": "Long OI diphthong - extended",
+      "level_id": "script_02",
+      "audio_key": "sara_oi_long_v1"
+    },
+    {
+      "id": "sara_ui_short",
+      "lao": "ຸຍ",
+      "name": "Sara Ui (short)",
+      "type": "diphthong",
+      "vowel_length": "short",
+      "sounds": {
+        "sound_vowel": "ui",
+        "ipa": "/ujʔ/"
+      },
+      "mnemonic": "Short UI diphthong",
+      "level_id": "script_02",
+      "audio_key": "sara_ui_short_v1"
+    },
+    {
+      "id": "sara_ui_long",
+      "lao": "ູຍ",
+      "name": "Sara Ui (long)",
+      "type": "diphthong",
+      "vowel_length": "long",
+      "sounds": {
+        "sound_vowel": "ui",
+        "ipa": "/uj/"
+      },
+      "mnemonic": "Long UI diphthong - extended",
+      "level_id": "script_02",
+      "audio_key": "sara_ui_long_v1"
     },
     {
       "id": "sara_ai",
