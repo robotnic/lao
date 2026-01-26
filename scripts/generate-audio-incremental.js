@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 
 /**
- * Incremental Audio Generation - Gemini 2.5 Flash TTS API
+ * Incremental Audio Generation - Google Cloud Text-to-Speech
  * 
  * Features:
  * - Skips existing audio files (only generates missing ones)
- * - Uses gemini-2.5-flash-preview-tts for high-quality TTS
+ * - Uses Google Cloud TTS with proper Lao language support
  * - Generates ~50 files per deployment
  * - Alternates between male and female voices
- * - Can build up to 200+ files over many deployments
- * - No rate limits for free tier
+ * - Can build up to 200+ files over multiple deployments
+ * 
+ * Cost: ~$1.20 for all 200 files (~$0.02 per request)
+ * Free tier: $300 monthly credit
  */
 
 const fs = require('fs');
@@ -25,13 +27,16 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 // Configuration
 const CONFIG = {
   MAX_FILES_PER_RUN: 50,        // Generate max 50 files per workflow run
-  DELAY_BETWEEN_FILES: 1000,    // 1 second delay for safety
-  API_KEY: process.env.GEMINI_API_KEY,
-  VOICES: ['male', 'female'],   // Alternate between voices
+  DELAY_BETWEEN_FILES: 500,     // 500ms delay for safety
+  API_KEY: process.env.GOOGLE_TTS_API_KEY,
+  VOICES: [
+    { name: 'lo-LA-Neural2-A', gender: 'male' },
+    { name: 'lo-LA-Neural2-B', gender: 'female' }
+  ]
 };
 
 if (!CONFIG.API_KEY) {
-  console.error('❌ Error: GEMINI_API_KEY environment variable not set');
+  console.error('❌ Error: GOOGLE_TTS_API_KEY environment variable not set');
   process.exit(1);
 }
 
@@ -59,59 +64,38 @@ if (!fs.existsSync(audioDir)) {
 function getExistingFiles() {
   try {
     const files = fs.readdirSync(audioDir);
-    return new Set(files.filter(f => f.endsWith('.wav')).map(f => f.replace('.wav', '')));
+    return new Set(files.filter(f => f.endsWith('.mp3')).map(f => f.replace('.mp3', '')));
   } catch {
     return new Set();
   }
 }
 
 /**
- * Get voice name based on index for alternating male/female
+ * Get voice config based on index for alternating male/female
  */
 function getVoiceForEntry(index) {
   return CONFIG.VOICES[index % CONFIG.VOICES.length];
 }
 
 /**
- * Get voice prompt description
+ * Generate audio using Google Cloud Text-to-Speech API
  */
-function getVoicePrompt(voice) {
-  if (voice === 'male') {
-    return 'Speak this in a clear male voice. Keep it natural and easy to understand.';
-  } else {
-    return 'Speak this in a clear female voice. Keep it natural and easy to understand.';
-  }
-}
-
-/**
- * Generate audio using Gemini 2.5 Flash TTS API
- */
-function generateAudioWithGemini(text, voice) {
+function generateAudioWithGoogle(text, voiceConfig) {
   return new Promise((resolve, reject) => {
-    // Map voice to Gemini voice names: Puck, Charon, Kore, Fenrir, Aoede
-    const voiceName = voice === 'male' ? 'Charon' : 'Aoede';
-    
     const payload = {
-      contents: [{
-        parts: [{
-          text: text
-        }]
-      }],
-      generationConfig: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: {
-              voiceName: voiceName
-            }
-          }
-        }
+      input: { text },
+      voice: {
+        languageCode: 'lo-LA',
+        name: voiceConfig.name
+      },
+      audioConfig: {
+        audioEncoding: 'MP3'
       }
     };
 
     const options = {
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${CONFIG.API_KEY}`,
+      hostname: 'texttospeech.googleapis.com',
+      path: `/v1/text:synthesize?key=${CONFIG.API_KEY}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,11 +114,8 @@ function generateAudioWithGemini(text, voice) {
         if (res.statusCode === 200) {
           try {
             const response = JSON.parse(data);
-            
-            // Extract audio from Gemini response
-            const audioData = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-            if (audioData) {
-              resolve(Buffer.from(audioData, 'base64'));
+            if (response.audioContent) {
+              resolve(Buffer.from(response.audioContent, 'base64'));
             } else {
               reject(new Error('No audio content in response'));
             }
@@ -147,10 +128,10 @@ function generateAudioWithGemini(text, voice) {
             if (error.error && error.error.message) {
               reject(new Error(`API Error: ${error.error.message}`));
             } else {
-              reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+              reject(new Error(`HTTP ${res.statusCode}`));
             }
           } catch {
-            reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+            reject(new Error(`HTTP ${res.statusCode}`));
           }
         }
       });
@@ -166,7 +147,7 @@ function generateAudioWithGemini(text, voice) {
  * Generate audio for a single entry
  */
 async function generateAudio(entry, voiceIndex) {
-  const audioPath = path.join(audioDir, `${entry.audio_key}.wav`);
+  const audioPath = path.join(audioDir, `${entry.audio_key}.mp3`);
   
   // Skip if file already exists
   if (fs.existsSync(audioPath)) {
@@ -192,10 +173,10 @@ async function generateAudio(entry, voiceIndex) {
   }
 
   try {
-    const voice = getVoiceForEntry(voiceIndex);
-    console.log(`🎵 Generating ${entry.audio_key} (${voice} voice)...`);
+    const voiceConfig = getVoiceForEntry(voiceIndex);
+    console.log(`🎵 Generating ${entry.audio_key} (${voiceConfig.gender} voice)...`);
     
-    const audioBuffer = await generateAudioWithGemini(textToSynthesize, voice);
+    const audioBuffer = await generateAudioWithGoogle(textToSynthesize, voiceConfig);
     
     await writeFile(audioPath, audioBuffer);
     console.log(`✅ Generated ${entry.audio_key}`);

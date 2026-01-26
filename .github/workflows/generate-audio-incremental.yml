@@ -25,7 +25,7 @@ jobs:
       
       - name: Generate audio files (skip existing)
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
           node scripts/generate-audio-incremental.js
       
@@ -33,7 +33,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: add generated audio files'
-          file_pattern: 'src/assets/audio/*.wav'
+          file_pattern: 'src/assets/audio/*.mp3'
           skip_fetch: false
           skip_checkout: false
           create_branch: false
@@ -41,4 +41,4 @@ jobs:
       - name: Report generation status
         run: |
           echo "✅ Audio generation complete"
-          echo "Files generated: $(find src/assets/audio -name '*.wav' | wc -l) / 200"
+          echo "Files generated: $(find src/assets/audio -name '*.mp3' | wc -l) / 200"
