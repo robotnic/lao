@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'src/assets/data/knowledge_base.json'
   workflow_dispatch:
 
 jobs:
