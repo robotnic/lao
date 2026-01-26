@@ -71,13 +71,13 @@ function getExistingFiles() {
 async function generateAudioWithGemini(text, voiceConfig) {
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash'
+      model: 'gemini-2.5-flash-tts'
     }, { apiVersion: 'v1beta' });
 
     const result = await model.generateContent({
       contents: [{
         role: 'user',
-        parts: [{ text: `Synthesize this Lao text: ${text}` }]
+        parts: [{ text }]
       }],
       generationConfig: {
         responseModalities: ['audio'],
