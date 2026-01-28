@@ -19,15 +19,17 @@ const CONFIG = {
   DELAY_BETWEEN_FILES: Number.parseInt(process.env.DELAY_BETWEEN_FILES || '15000', 10),
   // Accept key via env or argv for local runs.
   API_KEY: process.env.GEMINI_API_KEY || process.argv[2],
-  // Proven model for audio output via v1beta.
-  MODEL: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+  // TTS-capable model (required for responseModalities: ['AUDIO']).
+  MODEL: process.env.GEMINI_MODEL || 'gemini-2.5-flash-preview-tts',
   // Voices alternate male/female.
   VOICES: [
     { name: 'Charon', gender: 'male' },
     { name: 'Aoede', gender: 'female' }
   ],
   // Set ALLOW_INSECURE_TLS=1 only if you truly need it (e.g., intercepting proxy).
-  ALLOW_INSECURE_TLS: process.env.ALLOW_INSECURE_TLS === '1'
+  ALLOW_INSECURE_TLS: process.env.ALLOW_INSECURE_TLS === '1',
+  // When true, do not perform any retry requests (keeps a run to 1 API call).
+  DISABLE_API_RETRIES: process.env.DISABLE_API_RETRIES !== '0'
 };
 
 if (!CONFIG.API_KEY) {
@@ -104,6 +106,11 @@ async function generateAudioWithGemini(text, voiceConfig) {
       try {
         const parsed = JSON.parse(raw.data);
         const apiMessage = parsed?.error?.message;
+        if (apiMessage && apiMessage.toLowerCase().includes('does not support the requested response modalities')) {
+          throw new Error(
+            `API Error: ${apiMessage} (set GEMINI_MODEL to a TTS-capable model, e.g. gemini-2.5-flash-preview-tts)`
+          );
+        }
         throw new Error(apiMessage ? `API Error: ${apiMessage}` : `HTTP ${raw.statusCode}: ${raw.data}`);
       } catch (e) {
         if (e instanceof Error) throw e;
@@ -148,6 +155,10 @@ async function generateAudioWithGemini(text, voiceConfig) {
   try {
     response = await makeRequest(payloadWithVoice);
   } catch (error) {
+    if (CONFIG.DISABLE_API_RETRIES) {
+      throw error;
+    }
+
     // Compatibility fallback: if voice fields are rejected, retry without them.
     const message = error instanceof Error ? error.message : String(error);
     const looksLikeVoiceFieldError =

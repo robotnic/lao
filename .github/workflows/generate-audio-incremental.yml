@@ -29,9 +29,12 @@ jobs:
       - name: Generate audio files (skip existing)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          MAX_FILES_PER_RUN: '50'
+          GEMINI_MODEL: 'gemini-2.5-flash-preview-tts'
+          MAX_FILES_PER_RUN: '1'
           # Conservative pacing to avoid per-minute throttles.
           DELAY_BETWEEN_FILES: '25000'
+          # Ensure we never spend extra credits on fallback retries.
+          DISABLE_API_RETRIES: '1'
         run: |
           node scripts/generate-audio-incremental.js
       

@@ -23,7 +23,7 @@ gh run list --workflow=generate-audio-incremental.yml --limit=5
 
 1. **Workflow triggers** on push to main
 2. **Script runs** and checks existing audio files
-3. **Generates ~50 new files** (skips existing ones)
+3. **Generates new files** (skips existing ones) — by default this repo is configured to generate **1 file per run** to conserve limited API credits
 4. **Commits files** back to repository
 5. **Next push** generates the next batch
 
