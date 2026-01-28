@@ -31,7 +31,9 @@ const CONFIG = {
   // When true, do not perform any retry requests (keeps a run to 1 API call).
   DISABLE_API_RETRIES: process.env.DISABLE_API_RETRIES !== '0',
   // When true, delete invalid/broken audio files so they can be regenerated.
-  CLEAN_INVALID_AUDIO: process.env.CLEAN_INVALID_AUDIO === '1'
+  CLEAN_INVALID_AUDIO: process.env.CLEAN_INVALID_AUDIO === '1',
+  // Use the streaming endpoint for audio responses (more reliable for AUDIO modality).
+  USE_STREAMING: process.env.USE_STREAMING !== '0'
 };
 
 if (!CONFIG.API_KEY) {
@@ -196,21 +198,64 @@ async function generateAudioWithGemini(text, voiceConfig) {
   const makeRequest = async (payload) => {
     const body = JSON.stringify(payload);
 
+    const isAudioRequest = Array.isArray(payload?.generationConfig?.responseModalities)
+      && payload.generationConfig.responseModalities.some((m) => String(m).toUpperCase() === 'AUDIO');
+
+    const useStreaming = CONFIG.USE_STREAMING && isAudioRequest;
+    const methodName = useStreaming ? 'streamGenerateContent' : 'generateContent';
+    const extraQuery = useStreaming ? '&alt=sse' : '';
+
     const options = {
       hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/${encodeURIComponent(CONFIG.MODEL)}:generateContent?key=${encodeURIComponent(CONFIG.API_KEY)}`,
+      path: `/v1beta/models/${encodeURIComponent(CONFIG.MODEL)}:${methodName}?key=${encodeURIComponent(CONFIG.API_KEY)}${extraQuery}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body)
+        'Content-Length': Buffer.byteLength(body),
+        ...(useStreaming ? { 'Accept': 'text/event-stream' } : {})
       }
     };
 
     const raw = await new Promise((resolve, reject) => {
       const req = https.request(options, (res) => {
+        const statusCode = res.statusCode || 0;
+        const contentType = String(res.headers['content-type'] || '');
+
+        // SSE streaming (preferred for AUDIO responses)
+        if (useStreaming && statusCode === 200 && contentType.includes('text/event-stream')) {
+          let buffer = '';
+          const responses = [];
+
+          res.on('data', (chunk) => {
+            buffer += chunk.toString('utf8');
+
+            let newlineIndex;
+            while ((newlineIndex = buffer.indexOf('\n')) >= 0) {
+              const line = buffer.slice(0, newlineIndex).trimEnd();
+              buffer = buffer.slice(newlineIndex + 1);
+
+              if (!line.startsWith('data:')) continue;
+              const dataLine = line.slice('data:'.length).trim();
+              if (!dataLine || dataLine === '[DONE]') continue;
+
+              try {
+                responses.push(JSON.parse(dataLine));
+              } catch {
+                // Ignore parse errors on keepalive/partial lines.
+              }
+            }
+          });
+
+          res.on('end', () => {
+            resolve({ statusCode, data: JSON.stringify({ __streamResponses: responses }) });
+          });
+          return;
+        }
+
+        // Non-streaming response
         let data = '';
         res.on('data', (chunk) => (data += chunk));
-        res.on('end', () => resolve({ statusCode: res.statusCode || 0, data }));
+        res.on('end', () => resolve({ statusCode, data }));
       });
       req.on('error', reject);
       req.write(body);
@@ -291,7 +336,8 @@ async function generateAudioWithGemini(text, voiceConfig) {
   }
 
   // Audio payload schema can vary; search the full response for inlineData.
-  const inlineDataItems = collectInlineData(response);
+  const responseForSearch = Array.isArray(response?.__streamResponses) ? response.__streamResponses : response;
+  const inlineDataItems = collectInlineData(responseForSearch);
   const audioItems = inlineDataItems.filter((x) => (x.mimeType || '').toLowerCase().startsWith('audio/'));
 
   // Prefer audio/* parts; among those, prefer mpeg.
@@ -313,6 +359,11 @@ async function generateAudioWithGemini(text, voiceConfig) {
     };
   }
 
+  const isStreamWrapper = Array.isArray(response?.__streamResponses);
+  const streamResponses = isStreamWrapper ? response.__streamResponses : undefined;
+  const streamCount = Array.isArray(streamResponses) ? streamResponses.length : 0;
+  const lastStream = streamCount > 0 ? streamResponses[streamCount - 1] : undefined;
+
   const candidate0 = response?.candidates?.[0];
   const finishReason = candidate0?.finishReason;
   const safetyRatings = candidate0?.safetyRatings;
@@ -321,6 +372,8 @@ async function generateAudioWithGemini(text, voiceConfig) {
 
   throw new Error(
     `No audio content found in API response. Top-level keys: ${topKeys.join(', ')}. ` +
+      (isStreamWrapper ? `stream chunks: ${streamCount}. ` : '') +
+      (lastStream ? `last stream keys: ${Object.keys(lastStream).join(', ')}. ` : '') +
       `Candidate[0] keys: ${candidateKeys.join(', ')}. ` +
       (finishReason ? `finishReason: ${finishReason}. ` : '') +
       (safetyRatings ? `safetyRatings present. ` : '') +

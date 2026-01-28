@@ -40,6 +40,8 @@ jobs:
           DISABLE_API_RETRIES: '1'
           # Remove broken files (e.g., all-zero headers) so they can be regenerated.
           CLEAN_INVALID_AUDIO: '1'
+          # Use streaming endpoint for audio outputs.
+          USE_STREAMING: '1'
         run: |
           node scripts/generate-audio-incremental.js
       
