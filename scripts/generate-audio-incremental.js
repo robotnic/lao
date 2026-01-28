@@ -14,7 +14,7 @@ const https = require('https');
 // Configuration
 const CONFIG = {
   // In CI, keep this small enough to fit workflow timeouts.
-  MAX_FILES_PER_RUN: Number.parseInt(process.env.MAX_FILES_PER_RUN || '50', 10),
+  MAX_FILES_PER_RUN: Number.parseInt(process.env.MAX_FILES_PER_RUN || '1', 10),
   // Conservative delay to avoid per-minute throttles.
   DELAY_BETWEEN_FILES: Number.parseInt(process.env.DELAY_BETWEEN_FILES || '15000', 10),
   // Accept key via env or argv for local runs.
@@ -76,59 +76,93 @@ function getExistingFiles() {
  * Audio generation via Gemini 2.5 Flash
  */
 async function generateAudioWithGemini(text, voiceConfig) {
-  const payload = {
+  const makeRequest = async (payload) => {
+    const body = JSON.stringify(payload);
+
+    const options = {
+      hostname: 'generativelanguage.googleapis.com',
+      path: `/v1beta/models/${encodeURIComponent(CONFIG.MODEL)}:generateContent?key=${encodeURIComponent(CONFIG.API_KEY)}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body)
+      }
+    };
+
+    const raw = await new Promise((resolve, reject) => {
+      const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => resolve({ statusCode: res.statusCode || 0, data }));
+      });
+      req.on('error', reject);
+      req.write(body);
+      req.end();
+    });
+
+    if (raw.statusCode !== 200) {
+      try {
+        const parsed = JSON.parse(raw.data);
+        const apiMessage = parsed?.error?.message;
+        throw new Error(apiMessage ? `API Error: ${apiMessage}` : `HTTP ${raw.statusCode}: ${raw.data}`);
+      } catch (e) {
+        if (e instanceof Error) throw e;
+        throw new Error(`HTTP ${raw.statusCode}: ${raw.data}`);
+      }
+    }
+
+    try {
+      return JSON.parse(raw.data);
+    } catch {
+      throw new Error('Failed to parse JSON response from Gemini API.');
+    }
+  };
+
+  const basePayload = {
     contents: [{
       parts: [{
         text: `Generate a natural speech audio of this text. Speak it clearly and naturally: "${text}"`
       }]
     }],
     generationConfig: {
-      responseModalities: ['AUDIO'],
+      responseModalities: ['AUDIO']
+    }
+  };
+
+  // Newer schema: speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName
+  const payloadWithVoice = {
+    ...basePayload,
+    generationConfig: {
+      ...basePayload.generationConfig,
       speechConfig: {
-        voicePreset: voiceConfig.name
+        voiceConfig: {
+          prebuiltVoiceConfig: {
+            voiceName: voiceConfig.name
+          }
+        }
       }
     }
   };
 
-  const body = JSON.stringify(payload);
-
-  const options = {
-    hostname: 'generativelanguage.googleapis.com',
-    path: `/v1beta/models/${encodeURIComponent(CONFIG.MODEL)}:generateContent?key=${encodeURIComponent(CONFIG.API_KEY)}`,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(body)
-    }
-  };
-
-  const raw = await new Promise((resolve, reject) => {
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => (data += chunk));
-      res.on('end', () => resolve({ statusCode: res.statusCode || 0, data }));
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
-
-  if (raw.statusCode !== 200) {
-    try {
-      const parsed = JSON.parse(raw.data);
-      const apiMessage = parsed?.error?.message;
-      throw new Error(apiMessage ? `API Error: ${apiMessage}` : `HTTP ${raw.statusCode}: ${raw.data}`);
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      throw new Error(`HTTP ${raw.statusCode}: ${raw.data}`);
-    }
-  }
-
   let response;
   try {
-    response = JSON.parse(raw.data);
-  } catch {
-    throw new Error('Failed to parse JSON response from Gemini API.');
+    response = await makeRequest(payloadWithVoice);
+  } catch (error) {
+    // Compatibility fallback: if voice fields are rejected, retry without them.
+    const message = error instanceof Error ? error.message : String(error);
+    const looksLikeVoiceFieldError =
+      message.includes('speech_config') ||
+      message.includes('speechConfig') ||
+      message.includes('voicePreset') ||
+      message.includes('voiceConfig') ||
+      message.includes('prebuiltVoiceConfig') ||
+      message.includes('voiceName');
+
+    if (!looksLikeVoiceFieldError) {
+      throw error;
+    }
+
+    response = await makeRequest(basePayload);
   }
 
   const parts = response?.candidates?.[0]?.content?.parts;
