@@ -78,6 +78,42 @@ function getExistingFiles() {
  * Audio generation via Gemini 2.5 Flash
  */
 async function generateAudioWithGemini(text, voiceConfig) {
+  const findFirstInlineData = (value, maxDepth = 10) => {
+    const seen = new Set();
+
+    const walk = (node, depth) => {
+      if (!node || depth > maxDepth) return null;
+      if (typeof node !== 'object') return null;
+      if (seen.has(node)) return null;
+      seen.add(node);
+
+      // Common shape: { inlineData: { data: '...', mimeType: 'audio/mpeg' } }
+      if (node.inlineData && typeof node.inlineData === 'object') {
+        const data = node.inlineData.data;
+        const mimeType = node.inlineData.mimeType;
+        if (typeof data === 'string' && data.length > 0) {
+          return { data, mimeType: typeof mimeType === 'string' ? mimeType : undefined };
+        }
+      }
+
+      if (Array.isArray(node)) {
+        for (const item of node) {
+          const found = walk(item, depth + 1);
+          if (found) return found;
+        }
+        return null;
+      }
+
+      for (const key of Object.keys(node)) {
+        const found = walk(node[key], depth + 1);
+        if (found) return found;
+      }
+      return null;
+    };
+
+    return walk(value, 0);
+  };
+
   const makeRequest = async (payload) => {
     const body = JSON.stringify(payload);
 
@@ -176,18 +212,24 @@ async function generateAudioWithGemini(text, voiceConfig) {
     response = await makeRequest(basePayload);
   }
 
-  const parts = response?.candidates?.[0]?.content?.parts;
-  if (!Array.isArray(parts)) {
-    const keys = response && typeof response === 'object' ? Object.keys(response) : [];
-    throw new Error(`Unexpected API response shape (missing candidates[0].content.parts). Top-level keys: ${keys.join(', ')}`);
+  // Audio payload schema can vary; search the full response for inlineData.
+  const found = findFirstInlineData(response);
+  if (found?.data) {
+    return Buffer.from(found.data, 'base64');
   }
 
-  const audioPart = parts.find((p) => p?.inlineData?.data);
-  if (!audioPart) {
-    throw new Error('No audio content in response parts.');
-  }
+  const candidate0 = response?.candidates?.[0];
+  const finishReason = candidate0?.finishReason;
+  const safetyRatings = candidate0?.safetyRatings;
+  const candidateKeys = candidate0 && typeof candidate0 === 'object' ? Object.keys(candidate0) : [];
+  const topKeys = response && typeof response === 'object' ? Object.keys(response) : [];
 
-  return Buffer.from(audioPart.inlineData.data, 'base64');
+  throw new Error(
+    `No audio content found in API response. Top-level keys: ${topKeys.join(', ')}. ` +
+      `Candidate[0] keys: ${candidateKeys.join(', ')}. ` +
+      (finishReason ? `finishReason: ${finishReason}. ` : '') +
+      (safetyRatings ? `safetyRatings present.` : '')
+  );
 }
 
 function getVoiceForEntry(index) {
