@@ -38,6 +38,8 @@ jobs:
           DELAY_BETWEEN_FILES: '25000'
           # Ensure we never spend extra credits on fallback retries.
           DISABLE_API_RETRIES: '1'
+          # Remove broken files (e.g., all-zero headers) so they can be regenerated.
+          CLEAN_INVALID_AUDIO: '1'
         run: |
           node scripts/generate-audio-incremental.js
       
@@ -45,7 +47,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: add generated audio files'
-          file_pattern: 'src/assets/audio/*.mp3'
+          file_pattern: 'src/assets/audio/*.mp3 src/assets/audio/*.wav'
           skip_fetch: false
           skip_checkout: false
           create_branch: false
@@ -53,4 +55,4 @@ jobs:
       - name: Report generation status
         run: |
           echo "✅ Audio generation complete"
-          echo "Files generated: $(find src/assets/audio -name '*.mp3' | wc -l) / 200"
+          echo "Files generated: $(find src/assets/audio -name '*.mp3' -o -name '*.wav' | wc -l) / 200"

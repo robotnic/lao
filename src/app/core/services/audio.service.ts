@@ -25,13 +25,14 @@ export class AudioService {
    * @param language Language code for TTS fallback
    */
   playAudio(audioKey: string, fallbackText: string, language: string = 'lo-LA'): void {
-    const audioPath = `assets/audio/${audioKey}.mp3`;
+    const mp3Path = `assets/audio/${audioKey}.mp3`;
+    const wavPath = `assets/audio/${audioKey}.wav`;
 
     // Try to use cached audio element
     let audio = this.audioCache.get(audioKey);
     if (!audio) {
       audio = new Audio();
-      audio.src = audioPath;
+      audio.src = mp3Path;
       this.audioCache.set(audioKey, audio);
     }
 
@@ -47,8 +48,17 @@ export class AudioService {
           // Audio file played successfully
         })
         .catch((_error: any) => {
-          // Audio file not found or playback failed
-          // Fallback to TTS
+          // If mp3 fails, try wav once, then fall back to TTS.
+          if (audio) {
+            audio.src = wavPath;
+            audio.currentTime = 0;
+            const wavPromise = audio.play();
+            if (wavPromise) {
+              wavPromise.catch(() => this.tts.speak(fallbackText, language));
+              return;
+            }
+          }
+
           this.tts.speak(fallbackText, language);
         });
     } else {

@@ -29,7 +29,9 @@ const CONFIG = {
   // Set ALLOW_INSECURE_TLS=1 only if you truly need it (e.g., intercepting proxy).
   ALLOW_INSECURE_TLS: process.env.ALLOW_INSECURE_TLS === '1',
   // When true, do not perform any retry requests (keeps a run to 1 API call).
-  DISABLE_API_RETRIES: process.env.DISABLE_API_RETRIES !== '0'
+  DISABLE_API_RETRIES: process.env.DISABLE_API_RETRIES !== '0',
+  // When true, delete invalid/broken audio files so they can be regenerated.
+  CLEAN_INVALID_AUDIO: process.env.CLEAN_INVALID_AUDIO === '1'
 };
 
 if (!CONFIG.API_KEY) {
@@ -62,13 +64,91 @@ if (!fs.existsSync(audioDir)) {
   fs.mkdirSync(audioDir, { recursive: true });
 }
 
+function detectAudioExtension(mimeType) {
+  const mt = (mimeType || '').toLowerCase();
+  if (mt.includes('audio/mpeg') || mt.includes('audio/mp3')) return 'mp3';
+  if (mt.includes('audio/wav') || mt.includes('audio/x-wav')) return 'wav';
+  if (mt.includes('audio/ogg')) return 'ogg';
+  if (mt.includes('audio/flac')) return 'flac';
+  return 'mp3';
+}
+
+function isLikelyAudioBytes(header) {
+  if (!Buffer.isBuffer(header) || header.length < 4) return false;
+
+  // Reject all-zero headers (common symptom of decoding the wrong field).
+  let allZero = true;
+  for (const byte of header) {
+    if (byte !== 0) {
+      allZero = false;
+      break;
+    }
+  }
+  if (allZero) return false;
+
+  const ascii4 = header.subarray(0, 4).toString('ascii');
+  const ascii3 = header.subarray(0, 3).toString('ascii');
+
+  // WAV
+  if (ascii4 === 'RIFF') return true;
+  // OGG
+  if (ascii4 === 'OggS') return true;
+  // FLAC
+  if (ascii4 === 'fLaC') return true;
+  // MP3: ID3 tag or MPEG frame sync (0xFFEx)
+  if (ascii3 === 'ID3') return true;
+  if (header[0] === 0xff && (header[1] & 0xe0) === 0xe0) return true;
+
+  // MP4/M4A-ish: ....ftyp
+  if (header.length >= 8 && header.subarray(4, 8).toString('ascii') === 'ftyp') return true;
+
+  return false;
+}
+
+function isLikelyAudioFile(filePath) {
+  try {
+    const stat = fs.statSync(filePath);
+    if (!stat.isFile()) return false;
+    // Filter out trivially small/broken files.
+    if (stat.size < 256) return false;
+    const fd = fs.openSync(filePath, 'r');
+    const header = Buffer.alloc(16);
+    fs.readSync(fd, header, 0, header.length, 0);
+    fs.closeSync(fd);
+    return isLikelyAudioBytes(header);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Gets list of existing files
  */
 function getExistingFiles() {
   try {
     const files = fs.readdirSync(audioDir);
-    return new Set(files.filter(f => f.endsWith('.mp3')).map(f => f.replace('.mp3', '')));
+    const audioFiles = files.filter((f) => f.endsWith('.mp3') || f.endsWith('.wav'));
+    const validKeys = [];
+
+    for (const fileName of audioFiles) {
+      const fullPath = path.join(audioDir, fileName);
+      const ok = isLikelyAudioFile(fullPath);
+      if (!ok) {
+        if (CONFIG.CLEAN_INVALID_AUDIO) {
+          try {
+            fs.unlinkSync(fullPath);
+            console.warn(`🧹 Deleted invalid audio file: ${fileName}`);
+          } catch {
+            // Ignore delete failures; we'll just treat it as missing.
+          }
+        }
+        continue;
+      }
+
+      validKeys.push(fileName.replace(/\.(mp3|wav)$/i, ''));
+    }
+
+    return new Set(validKeys);
   } catch {
     return new Set();
   }
@@ -78,40 +158,39 @@ function getExistingFiles() {
  * Audio generation via Gemini 2.5 Flash
  */
 async function generateAudioWithGemini(text, voiceConfig) {
-  const findFirstInlineData = (value, maxDepth = 10) => {
+  const collectInlineData = (value, maxDepth = 10) => {
     const seen = new Set();
+    const found = [];
 
     const walk = (node, depth) => {
-      if (!node || depth > maxDepth) return null;
-      if (typeof node !== 'object') return null;
-      if (seen.has(node)) return null;
+      if (!node || depth > maxDepth) return;
+      if (typeof node !== 'object') return;
+      if (seen.has(node)) return;
       seen.add(node);
 
-      // Common shape: { inlineData: { data: '...', mimeType: 'audio/mpeg' } }
       if (node.inlineData && typeof node.inlineData === 'object') {
         const data = node.inlineData.data;
         const mimeType = node.inlineData.mimeType;
         if (typeof data === 'string' && data.length > 0) {
-          return { data, mimeType: typeof mimeType === 'string' ? mimeType : undefined };
+          found.push({
+            data,
+            mimeType: typeof mimeType === 'string' ? mimeType : undefined
+          });
         }
       }
 
       if (Array.isArray(node)) {
-        for (const item of node) {
-          const found = walk(item, depth + 1);
-          if (found) return found;
-        }
-        return null;
+        for (const item of node) walk(item, depth + 1);
+        return;
       }
 
       for (const key of Object.keys(node)) {
-        const found = walk(node[key], depth + 1);
-        if (found) return found;
+        walk(node[key], depth + 1);
       }
-      return null;
     };
 
-    return walk(value, 0);
+    walk(value, 0);
+    return found;
   };
 
   const makeRequest = async (payload) => {
@@ -213,9 +292,26 @@ async function generateAudioWithGemini(text, voiceConfig) {
   }
 
   // Audio payload schema can vary; search the full response for inlineData.
-  const found = findFirstInlineData(response);
-  if (found?.data) {
-    return Buffer.from(found.data, 'base64');
+  const inlineDataItems = collectInlineData(response);
+  const audioItems = inlineDataItems.filter((x) => (x.mimeType || '').toLowerCase().startsWith('audio/'));
+
+  // Prefer audio/* parts; among those, prefer mpeg.
+  const preferred =
+    audioItems.find((x) => (x.mimeType || '').toLowerCase().includes('audio/mpeg')) ||
+    audioItems[0];
+
+  if (preferred?.data) {
+    const buffer = Buffer.from(preferred.data, 'base64');
+    const header = buffer.subarray(0, 16);
+    if (!isLikelyAudioBytes(header)) {
+      const mt = preferred.mimeType || 'unknown';
+      throw new Error(`Decoded bytes do not look like audio (mimeType=${mt}).`);
+    }
+
+    return {
+      buffer,
+      mimeType: preferred.mimeType
+    };
   }
 
   const candidate0 = response?.candidates?.[0];
@@ -267,7 +363,6 @@ async function generateIncrementalAudio() {
     const entry = filesToGenerate[i];
     const voiceConfig = getVoiceForEntry(existingFiles.size + i);
     const text = entry.name_lao || entry.lao || entry.english;
-    const audioPath = path.join(audioDir, `${entry.audio_key}.mp3`);
 
     console.log(`[${i+1}/${filesToGenerate.length}] 🎵 ${entry.audio_key} (${voiceConfig.gender})...`);
 
@@ -279,9 +374,12 @@ async function generateIncrementalAudio() {
         throw new Error('No text found for entry (expected name_lao, lao, or english).');
       }
 
-      const buffer = await generateAudioWithGemini(text, voiceConfig);
-      fs.writeFileSync(audioPath, buffer);
+      const { buffer, mimeType } = await generateAudioWithGemini(text, voiceConfig);
+      const ext = detectAudioExtension(mimeType);
+      const finalAudioPath = path.join(audioDir, `${entry.audio_key}.${ext}`);
+      fs.writeFileSync(finalAudioPath, buffer);
       results.push({ key: entry.audio_key, status: 'success', gender: voiceConfig.gender });
+      console.log(`✅ Wrote ${path.basename(finalAudioPath)} (${mimeType || 'unknown'})`);
     } catch (err) {
       console.error(`❌ Error with ${entry.audio_key}: ${err.message}`);
       results.push({ key: entry.audio_key, status: 'error' });
