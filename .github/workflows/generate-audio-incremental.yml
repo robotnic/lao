@@ -47,7 +47,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: add generated audio files'
-          file_pattern: 'src/assets/audio/*.mp3 src/assets/audio/*.wav'
+          # Avoid shell glob failures when one extension is absent.
+          # Also stage deletions (e.g., removal of broken files) via add_options.
+          file_pattern: 'src/assets/audio'
+          add_options: '-A'
           skip_fetch: false
           skip_checkout: false
           create_branch: false
