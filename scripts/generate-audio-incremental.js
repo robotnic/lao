@@ -242,9 +242,8 @@ async function generateAudioWithGemini(text, voiceConfig) {
 
   const basePayload = {
     contents: [{
-      parts: [{
-        text: `Generate a natural speech audio of this text. Speak it clearly and naturally: "${text}"`
-      }]
+      role: 'user',
+      parts: [{ text }]
     }],
     generationConfig: {
       responseModalities: ['AUDIO']
@@ -324,7 +323,8 @@ async function generateAudioWithGemini(text, voiceConfig) {
     `No audio content found in API response. Top-level keys: ${topKeys.join(', ')}. ` +
       `Candidate[0] keys: ${candidateKeys.join(', ')}. ` +
       (finishReason ? `finishReason: ${finishReason}. ` : '') +
-      (safetyRatings ? `safetyRatings present.` : '')
+      (safetyRatings ? `safetyRatings present. ` : '') +
+      (candidate0 ? `candidate[0]: ${JSON.stringify(candidate0)}` : '')
   );
 }
 
