@@ -73,6 +73,8 @@ export GEMINI_API_KEY="your-key"
 node scripts/generate-audio-incremental.js
 ```
 
+If local API access is blocked (common on restricted networks), skip this and trigger the GitHub Actions workflow instead.
+
 ### 3. Deploy
 Push to main or trigger manually:
 ```bash

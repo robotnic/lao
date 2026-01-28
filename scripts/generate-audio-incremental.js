@@ -1,41 +1,48 @@
 #!/usr/bin/env node
 
 /**
- * Incremental Audio Generation - Google Gemini 2.5 Flash TTS (2026 Edition)
- * 
- * Optimizations:
- * - Model: gemini-2.5-flash (stable endpoint)
- * - Rate Limiting: 5s Delay (safe within the 15 RPM / 1000 RPD limits)
- * - Error Handling: Correct extraction of audio bytes from v1beta Parts
+ * Incremental Audio Generation - Google Gemini TTS
+ *
+ * Generates missing audio assets under src/assets/audio, skipping existing files.
+ * Output format expected by the app: .mp3 (see src/app/core/services/audio.service.ts).
  */
 
 const fs = require('fs');
 const path = require('path');
-const util = require('util');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-// Allow self-signed certificates (only if local proxy issues exist)
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+const https = require('https');
 
 // Configuration
 const CONFIG = {
-  MAX_FILES_PER_RUN: 1,         // Increased to 50 (safe for a workflow run)
-  DELAY_BETWEEN_FILES: 15000,     // 5 seconds (sufficient at 15 requests/min)
-  API_KEY: process.env.GEMINI_API_KEY,
-  // 2026 Voice Names (Charon & Aoede are standard, Puck & Fenrir are alternatives)
+  // In CI, keep this small enough to fit workflow timeouts.
+  MAX_FILES_PER_RUN: Number.parseInt(process.env.MAX_FILES_PER_RUN || '50', 10),
+  // Conservative delay to avoid per-minute throttles.
+  DELAY_BETWEEN_FILES: Number.parseInt(process.env.DELAY_BETWEEN_FILES || '15000', 10),
+  // Accept key via env or argv for local runs.
+  API_KEY: process.env.GEMINI_API_KEY || process.argv[2],
+  // Proven model for audio output via v1beta.
+  MODEL: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+  // Voices alternate male/female.
   VOICES: [
     { name: 'Charon', gender: 'male' },
     { name: 'Aoede', gender: 'female' }
-  ]
+  ],
+  // Set ALLOW_INSECURE_TLS=1 only if you truly need it (e.g., intercepting proxy).
+  ALLOW_INSECURE_TLS: process.env.ALLOW_INSECURE_TLS === '1'
 };
 
 if (!CONFIG.API_KEY) {
-  console.error('❌ Error: GEMINI_API_KEY environment variable not set');
+  console.error('❌ Error: Gemini API key not provided');
+  console.error('\nUsage:');
+  console.error('  GEMINI_API_KEY=your-key node scripts/generate-audio-incremental.js');
+  console.error('  OR');
+  console.error('  node scripts/generate-audio-incremental.js your-key');
   process.exit(1);
 }
 
-// Initialize Gemini client (v1beta is necessary for native audio output)
-const genAI = new GoogleGenerativeAI(CONFIG.API_KEY);
+if (CONFIG.ALLOW_INSECURE_TLS) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  console.warn('⚠️  ALLOW_INSECURE_TLS=1 set; TLS certificate verification is disabled.');
+}
 
 // Load knowledge base
 let knowledgeBase;
@@ -59,7 +66,7 @@ if (!fs.existsSync(audioDir)) {
 function getExistingFiles() {
   try {
     const files = fs.readdirSync(audioDir);
-    return new Set(files.filter(f => f.endsWith('.wav')).map(f => f.replace('.wav', '')));
+    return new Set(files.filter(f => f.endsWith('.mp3')).map(f => f.replace('.mp3', '')));
   } catch {
     return new Set();
   }
@@ -69,44 +76,77 @@ function getExistingFiles() {
  * Audio generation via Gemini 2.5 Flash
  */
 async function generateAudioWithGemini(text, voiceConfig) {
-  try {
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash-preview-tts'
-    }, { apiVersion: 'v1beta' });
-
-    const result = await model.generateContent({
-      contents: [{
-        role: 'user',
-        parts: [{ text }]
-      }],
-      generationConfig: {
-        responseModalities: ['audio'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: {
-              voiceName: voiceConfig.name
-            }
-          }
-        }
+  const payload = {
+    contents: [{
+      parts: [{
+        text: `Generate a natural speech audio of this text. Speak it clearly and naturally: "${text}"`
+      }]
+    }],
+    generationConfig: {
+      responseModalities: ['AUDIO'],
+      speechConfig: {
+        voicePreset: voiceConfig.name
       }
-    });
-
-    const response = await result.response;
-    
-    // In 2026, audio data is returned as base64 in the Part object
-    const audioPart = response.candidates[0].content.parts.find(p => p.inlineData && p.inlineData.mimeType.includes('audio'));
-    
-    if (audioPart) {
-      return Buffer.from(audioPart.inlineData.data, 'base64');
-    } else if (typeof response.audioBytes === 'function') {
-      // Fallback for older SDK helpers
-      return Buffer.from(response.audioBytes(), 'base64');
-    } else {
-      throw new Error('No audio data found in the API response.');
     }
-  } catch (error) {
-    throw new Error(`API error: ${error.message}`);
+  };
+
+  const body = JSON.stringify(payload);
+
+  const options = {
+    hostname: 'generativelanguage.googleapis.com',
+    path: `/v1beta/models/${encodeURIComponent(CONFIG.MODEL)}:generateContent?key=${encodeURIComponent(CONFIG.API_KEY)}`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(body)
+    }
+  };
+
+  const raw = await new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => (data += chunk));
+      res.on('end', () => resolve({ statusCode: res.statusCode || 0, data }));
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+
+  if (raw.statusCode !== 200) {
+    try {
+      const parsed = JSON.parse(raw.data);
+      const apiMessage = parsed?.error?.message;
+      throw new Error(apiMessage ? `API Error: ${apiMessage}` : `HTTP ${raw.statusCode}: ${raw.data}`);
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      throw new Error(`HTTP ${raw.statusCode}: ${raw.data}`);
+    }
   }
+
+  let response;
+  try {
+    response = JSON.parse(raw.data);
+  } catch {
+    throw new Error('Failed to parse JSON response from Gemini API.');
+  }
+
+  const parts = response?.candidates?.[0]?.content?.parts;
+  if (!Array.isArray(parts)) {
+    const keys = response && typeof response === 'object' ? Object.keys(response) : [];
+    throw new Error(`Unexpected API response shape (missing candidates[0].content.parts). Top-level keys: ${keys.join(', ')}`);
+  }
+
+  const audioPart = parts.find((p) => p?.inlineData?.data);
+  if (!audioPart) {
+    throw new Error('No audio content in response parts.');
+  }
+
+  return Buffer.from(audioPart.inlineData.data, 'base64');
+}
+
+function getVoiceForEntry(index) {
+  return CONFIG.VOICES[index % CONFIG.VOICES.length];
 }
 
 /**
@@ -138,13 +178,20 @@ async function generateIncrementalAudio() {
 
   for (let i = 0; i < filesToGenerate.length; i++) {
     const entry = filesToGenerate[i];
-    const voiceConfig = CONFIG.VOICES[(existingFiles.size + i) % CONFIG.VOICES.length];
+    const voiceConfig = getVoiceForEntry(existingFiles.size + i);
     const text = entry.name_lao || entry.lao || entry.english;
-    const audioPath = path.join(audioDir, `${entry.audio_key}.wav`);
+    const audioPath = path.join(audioDir, `${entry.audio_key}.mp3`);
 
     console.log(`[${i+1}/${filesToGenerate.length}] 🎵 ${entry.audio_key} (${voiceConfig.gender})...`);
 
     try {
+      if (!entry.audio_key) {
+        throw new Error('Missing audio_key on entry.');
+      }
+      if (!text) {
+        throw new Error('No text found for entry (expected name_lao, lao, or english).');
+      }
+
       const buffer = await generateAudioWithGemini(text, voiceConfig);
       fs.writeFileSync(audioPath, buffer);
       results.push({ key: entry.audio_key, status: 'success', gender: voiceConfig.gender });

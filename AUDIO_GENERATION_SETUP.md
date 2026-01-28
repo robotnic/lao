@@ -106,7 +106,9 @@ The workflow runs automatically when:
 
 ### Local Testing
 
-Test the script locally before pushing:
+Local runs require outbound access to `generativelanguage.googleapis.com`. If your network/firewall blocks that, run the workflow in GitHub Actions instead (recommended).
+
+If you do have network access and want to test locally:
 
 ```bash
 # Set API key
@@ -159,7 +161,7 @@ Expected output:
 ### API Limits
 - **Gemini API**: 1,500 requests per day
 - **Per Deployment**: Max 50 files (safe margin)
-- **Delay Between Files**: 2 seconds (conservative)
+- **Delay Between Files**: configured in GitHub Actions via `DELAY_BETWEEN_FILES` (defaults to 15s in the script)
 
 ### Calculation
 - 50 files × 1 API call per file = 50 requests per deployment

@@ -45,6 +45,8 @@ Run generation without pushing code:
 gh workflow run generate-audio-incremental.yml -r main
 ```
 
+If local generation is blocked by your network/firewall, this GitHub Actions trigger is the recommended way to run TTS.
+
 Check status:
 ```bash
 gh run list --workflow=generate-audio-incremental.yml --limit=1

@@ -42,7 +42,7 @@ cd scripts
 node generate-audio-incremental.js
 ```
 
-**Note:** Requires `GEMINI_API_KEY` environment variable.
+**Note:** Requires `GEMINI_API_KEY` environment variable and outbound access to `generativelanguage.googleapis.com`. If local generation is blocked by a firewall, use the GitHub Actions workflow instead.
 
 ## Encoding Specifications
 
