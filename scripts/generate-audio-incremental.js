@@ -19,7 +19,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Configuration
 const CONFIG = {
-  MAX_FILES_PER_RUN: 5,         // Increased to 50 (safe for a workflow run)
+  MAX_FILES_PER_RUN: 1,         // Increased to 50 (safe for a workflow run)
   DELAY_BETWEEN_FILES: 15000,     // 5 seconds (sufficient at 15 requests/min)
   API_KEY: process.env.GEMINI_API_KEY,
   // 2026 Voice Names (Charon & Aoede are standard, Puck & Fenrir are alternatives)
